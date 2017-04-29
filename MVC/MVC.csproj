@@ -16,6 +16,7 @@
   <ItemGroup>
     <Content Include=".vscode\launch.json" />
     <Content Include=".vscode\tasks.json" />
+    <Content Include="wwwroot\js\jquery-validation-unobtrusive\.bower.json" />
   </ItemGroup>
 
   <ItemGroup>
