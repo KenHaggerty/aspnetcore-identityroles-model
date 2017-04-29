@@ -1,0 +1,40 @@
+@using MVC.Models.MemberViewModels
+@model MemberIndexViewModel
+
+@{
+    ViewData["Title"] = "Members";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <h4>Only logged in users can access this page.</h4>
+    <div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <dl class="dl-horizontal">
+            <dt style="width: 90px;">
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+            <dd style="margin-left:100px;">
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+            <dt style="width: 90px;">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd style="margin-left:100px;">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt style="width: 90px;">
+                @Html.DisplayNameFor(model => model.RolesString)
+            </dt>
+            <dd style="margin-left:100px;">
+                @Html.DisplayFor(model => model.RolesString)
+            </dd>
+            <dt style="width: 90px;">
+            </dt>
+            <dd style="margin-left:100px; padding-top:10px;">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Cancel</a>
+            </dd>
+        </dl>
+        
+    </div>
+</div>

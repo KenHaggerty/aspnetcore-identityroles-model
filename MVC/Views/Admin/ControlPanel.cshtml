@@ -1,0 +1,60 @@
+﻿@model IEnumerable<MVC.Models.AdminViewModels.UserViewModel>
+
+@{
+    ViewData["Title"] = "Admin";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div style="margin-bottom:10px;">
+        <a asp-action="UserIndex" class="btn btn-primary">Users</a>
+        @if (Context.User.IsInRole("AdminRole"))
+        {
+            <a asp-action="RoleIndex" class="btn btn-primary">Roles</a>
+        }
+        @if (Context.User.IsInRole("AdminRole") || Context.User.IsInRole("LogViewRole"))
+        {
+            <a asp-action="LogEntries" class="btn btn-primary">Event Log</a>
+        }
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <label>@ViewData["Version"]</label><br />
+    <label>@ViewData["ServerHost"]</label><br />
+    <label>@ViewData["RemoteIPs"]</label><br />
+    <label id="ClientLabel"></label>
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UserName)</th>
+            <th class="hidden-xsuper">@Html.DisplayNameFor(model => model.Email)</th>
+            <th class="hidden-xs">@Html.DisplayNameFor(model => model.EmailConfirmed)</th>
+            <th>Roles</th>
+        </tr>
+
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @user.UserName
+                </td>
+                <td class="hidden-xsuper">
+                    @user.Email
+                </td>
+                <td class="hidden-xs">
+                    @user.EmailConfirmed
+                </td>
+                <td>
+                    @user.RolesString
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ClientLabel').text('Client: Location = ' + window.location + ', Origin = ' + window.location.origin);
+        });
+    </script>
+}

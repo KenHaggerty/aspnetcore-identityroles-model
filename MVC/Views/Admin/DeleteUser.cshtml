@@ -1,0 +1,38 @@
+@model MVC.Models.AdminViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Delete User";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <h3>Are you sure you want to delete this user?</h3>
+    <div>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <dl class="dl-horizontal">
+            <dt style="width: 90px;">
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+            <dd style="margin-left:100px;">
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+            <dt style="width: 90px;">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd style="margin-left:100px;">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt style="width: 90px;">
+                @Html.DisplayNameFor(model => model.RolesString)
+            </dt>
+            <dd style="margin-left:100px;">
+                @Html.DisplayFor(model => model.RolesString)
+            </dd>
+        </dl>
+
+        <form asp-controller="Admin" asp-action="DeleteUser" method="post" class="form-horizontal">
+            <a asp-action="UserIndex" class="btn btn-primary">Cancel</a>
+            <input type="submit" value="Delete" class="btn btn-primary" />
+        </form>
+    </div>
+</div>

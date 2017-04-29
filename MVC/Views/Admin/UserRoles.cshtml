@@ -1,0 +1,44 @@
+@model IEnumerable<MVC.Models.AdminViewModels.RoleViewModel>
+
+@{
+    ViewData["Title"] = "User Roles";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div style="margin-bottom:10px;">
+        <a asp-action="ControlPanel" class="btn btn-primary">Admin</a>
+        <a asp-action="UserIndex" class="btn btn-primary">Users</a>
+        <a asp-action="EditUser" asp-route-id="@ViewData["UserName"]" class="btn btn-primary">Edit User</a>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <form id="@item.Name" asp-controller="Admin" asp-action="SetUserRole" asp-route-id="@ViewData["UserName"]" asp-route-role="@item.Name" method="post"  class="form-horizontal">
+                        <div class="checkbox">
+                            <input type="checkbox" class="with-font" id="Checkbox@(item.Name)" @(item.Selected ? "checked=checked" : "")
+                                   name="@item.Name" onchange="$('#@item.Name').submit();">
+                            <label for="Checkbox@(item.Name)">
+                                @item.Name
+                            </label>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+            </tr>
+        }
+    </table>
+</div>

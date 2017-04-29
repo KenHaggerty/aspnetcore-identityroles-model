@@ -1,0 +1,38 @@
+@model MVC.Models.AdminViewModels.RoleViewModel
+
+@{
+    ViewData["Title"] = "Edit Role";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <form asp-action="EditRole" class="form-horizontal">
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <label class="control-label">
+                    @Html.DisplayFor(model => model.Name)
+                    <input type="hidden" asp-for="Name" />
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a asp-action="RoleIndex" class="btn btn-primary">Cancel</a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

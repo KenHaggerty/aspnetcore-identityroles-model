@@ -1,0 +1,103 @@
+@model MVC.Models.AdminViewModels.EditUserViewModel
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <form asp-action="EditUser" class="form-horizontal">
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <label class="control-label">
+                    @Html.DisplayFor(model => model.UserName)
+                    <input type="hidden" asp-for="UserName" />
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox-inline">
+                    <input asp-for="EmailConfirmed" class="with-font" />
+                    <label asp-for="EmailConfirmed"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PhoneNumber" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox-inline">
+                    <input asp-for="PhoneNumberConfirmed" class="with-font" />
+                    <label asp-for="PhoneNumberConfirmed"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox-inline">
+                    <input asp-for="TwoFactorEnabled" class="with-font" />
+                    <label asp-for="TwoFactorEnabled"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Password" class="form-control" placeholder="Blank for no change." />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox-inline">
+                    <input asp-for="MustChangePassword" class="with-font" />
+                    <label asp-for="MustChangePassword"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RolesString" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <label class="control-label">
+                    @Html.DisplayFor(model => model.RolesString)
+                </label>
+            </div>
+        </div>        
+        <div class="form-group">
+            <label asp-for="ExternalLoginsString" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <label class="control-label">
+                    @Html.DisplayFor(model => model.ExternalLoginsString)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a asp-action="UserIndex" class="btn btn-primary">Cancel</a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @if (Context.User.IsInRole("AdminRole"))
+                {
+                    <a asp-action="UserRoles" asp-route-id="@Model.UserName" class="btn btn-primary">Roles</a>
+                }
+            </div>
+        </div>
+        
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

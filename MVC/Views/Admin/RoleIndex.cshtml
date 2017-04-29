@@ -1,0 +1,46 @@
+@model IEnumerable<MVC.Models.AdminViewModels.RoleViewModel>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div style="margin-bottom:10px;">
+        <a asp-action="ControlPanel" class="btn btn-primary">Admin</a>
+        <a asp-action="NewRole" class="btn btn-primary">New</a>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-action="EditRole" asp-route-id="@item.Name">Edit</a>
+                    @{
+                        var rn = item.Name;
+                        if (rn != "AdminRole" && rn != "LogViewRole" && rn != "ManagerRole")
+                        {
+                            <text>| </text><a asp-action="DeleteRole" asp-route-id="@item.Name">Delete</a>
+                        }
+                    }
+                </td>
+            </tr>
+                        }
+    </table>
+</div>

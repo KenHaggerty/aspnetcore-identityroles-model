@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MVC.Models.AdminViewModels.UserViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+<div class="container-sub">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <div style="margin-bottom:10px;">
+        <a asp-action="ControlPanel" class="btn btn-primary">Admin</a>
+        <a asp-action="NewUser" class="btn btn-primary">New</a>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UserName)</th>
+            <th class="hidden-xsuper">@Html.DisplayNameFor(model => model.Email)</th>
+            <th class="hidden-xs">@Html.DisplayNameFor(model => model.EmailConfirmed)</th>
+            <th class="hidden-xs hidden-sm">@Html.DisplayNameFor(model => model.TwoFactorEnabled)</th>
+            <th>@Html.DisplayNameFor(model => model.RolesString)</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @user.UserName
+                </td>
+                <td class="hidden-xsuper">
+                    @user.Email
+                </td>
+                <td class="hidden-xs">
+                    @user.EmailConfirmed
+                </td>
+                <td class="hidden-xs hidden-sm">
+                    @user.TwoFactorEnabled
+                </td>
+                <td>
+                    @user.RolesString
+                </td>
+                <td>
+                    @if (Context.User.IsInRole("AdminRole"))
+                {
+                        <a asp-action="UserRoles" asp-route-id="@user.UserName">Roles</a><text> |</text>
+                    }
+                    <a asp-action="EditUser" asp-route-id="@user.UserName">Edit</a>
+                    @if (Context.User.IsInRole("AdminRole"))
+                    {
+                        <text>| </text><a asp-action="DeleteUser" asp-route-id="@user.UserName" >Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
