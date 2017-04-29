@@ -456,6 +456,9 @@ namespace MVC.Controllers
             return View(model);
           }
           _utilityService.InsertLogEntry(HttpContext, "Admin User Role Added", model.UserName + " added first user to Admin role.", LogType.Information);
+          user.EmailConfirmed = true;
+          await _userManager.UpdateAsync(user);
+          return RedirectToAction("Login", "Account");
         }
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
