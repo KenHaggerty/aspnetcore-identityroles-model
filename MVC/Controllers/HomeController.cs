@@ -33,7 +33,6 @@ namespace MVC.Controllers
         public IActionResult Contact()
         {
             _utilityService.SetViewCookie(HttpContext, "Contact View", "ContactView", LogType.Information);
-            ViewData["Message"] = "Your contact page.";
             return View();
         }
 

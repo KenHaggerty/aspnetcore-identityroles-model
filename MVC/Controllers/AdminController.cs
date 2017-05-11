@@ -32,6 +32,8 @@ namespace MVC.Controllers
     private readonly ISmsSender _smsSender;
     private readonly IUtilityService _utilityService;
     private readonly Settings _settings;
+    private readonly LogDbContext _logcontext;
+
     public AdminController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
@@ -39,7 +41,8 @@ namespace MVC.Controllers
         IEmailSender emailSender,
         ISmsSender smsSender,
         IUtilityService utilityService,
-        IOptionsSnapshot<Settings> settings)
+        IOptionsSnapshot<Settings> settings,
+        LogDbContext logcontext)
     {
       _userManager = userManager;
       _signInManager = signInManager;
@@ -48,6 +51,7 @@ namespace MVC.Controllers
       _smsSender = smsSender;
       _utilityService = utilityService;
       _settings = settings.Value;
+      _logcontext = logcontext;
     }
 
     //
@@ -106,30 +110,24 @@ namespace MVC.Controllers
       var v = new LogEntriesViewModel();
       try
       {
-        using (var db = new LogDbContext())
+        var entries = _logcontext.LogEntries.Where(e => e.CreateDate > startdate && e.CreateDate < enddate).AsQueryable();
+        if (Type != LogType.All)
         {
-          //var entries = db.LogEntries.AsQueryable();
-          var entries = db.LogEntries.Where(e => e.CreateDate > startdate && e.CreateDate < enddate).AsQueryable();
-          if (Type != LogType.All)
-          {
-            entries = entries.Where(e => e.LogType == Type);
-          }
-
-          entries = entries.OrderByDescending(e => e.CreateDate).Take(1000).AsQueryable();
-
-          v.TZoffset = tzoffset;
-          v.PageIndex = pageNumber;
-          v.RowIndex = itemsPerPage * pageNumber - itemsPerPage + 1;
-          var count = await entries.CountAsync();
-          v.EntryCount = count;
-          v.TotalPages = (int)Math.Ceiling(count / (double)itemsPerPage);
-          v.StartDate = Start;
-          v.EndDate = End;
-          v.Type = Type;
-          v.Country = Country;
-          v.Types = selectlist;
-          v.Entries = await entries.AsNoTracking().Skip((pageNumber - 1) * itemsPerPage).Take(itemsPerPage).ToListAsync();
+          entries = entries.Where(e => e.LogType == Type);
         }
+        entries = entries.OrderByDescending(e => e.CreateDate).Take(1000).AsQueryable();
+        v.TZoffset = tzoffset;
+        v.PageIndex = pageNumber;
+        v.RowIndex = itemsPerPage * pageNumber - itemsPerPage + 1;
+        var count = await entries.CountAsync();
+        v.EntryCount = count;
+        v.TotalPages = (int)Math.Ceiling(count / (double)itemsPerPage);
+        v.StartDate = Start;
+        v.EndDate = End;
+        v.Type = Type;
+        v.Country = Country;
+        v.Types = selectlist;
+        v.Entries = await entries.AsNoTracking().Skip((pageNumber - 1) * itemsPerPage).Take(itemsPerPage).ToListAsync();
       }
       catch (Exception ex)
       {
@@ -150,11 +148,8 @@ namespace MVC.Controllers
       {
         try
         {
-          using (var db = new LogDbContext())
-          {
-            var entry = db.LogEntries.Where(e => e.ID == id).FirstOrDefault();
-            return Json(entry);
-          }
+          var entry = _logcontext.LogEntries.Where(e => e.ID == id).FirstOrDefault();
+          return Json(entry);
         }
         catch (Exception ex)
         {
@@ -278,7 +273,7 @@ namespace MVC.Controllers
       }
       return View(ul);
     }
-    
+
     //
     // GET: /Admin/UserRoles
     [HttpGet]

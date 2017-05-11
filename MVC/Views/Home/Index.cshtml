@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "MVC Identity Roles";
 }
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
@@ -64,45 +64,31 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518004">Bower</a> for managing client-side libraries</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699318">Add client packages using Bower.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run & Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
-</div>
+<h3>MVC Identity Roles</h3>
+<p class="text-justify">
+  Visual Studio 2017 was released for production on 2017-03-07, but I have been developing with VS 2017 since around the first of the year with the release candidate
+  versions. You can generate a site almost like this model by installing the .NET Core command-line interface (CLI) tools or VS 2017 then using the command below from
+  a command prompt inside an empty folder. This <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/tools/" target="_blank">article</a> explains the
+  commands and installation options.
+</p>
+<p>
+  <strong>dotnet new mvc -au Individual -f netcoreapp1.1</strong>
+</p>
+<p class="text-justify">
+  The templated site supports user registration and logins with a local SQLite database and it has a minimal logger configured for debugging. The templated site
+  gets you pretty far and will launch as is from VS 2017. One new feature uses an appsettings.json file to inject key-value settings on to the context making them available
+  virtually anywhere in your site.
+  This <a href="https://hassantariqblog.wordpress.com/2017/02/20/asp-net-core-step-by-step-guide-to-access-appsettings-json-in-web-project-and-class-library/" target="_blank">article</a>
+  gives a very good explanation of how to configure this feature.
+  
+  This model is referencing the 1.1.2 SDK, delivered by <a href="https://www.nuget.org/" target="_blank">NuGet</a> have
+  matured to a very stable platform. Unfortunately, the rapid development of the frameworks has left a lot of the existing documentation with inaccuracies which is why I have
+  published this repository. The template generates the Identity v2.2 ApplicationUser class and the database tables for roles and claims using EntityFrameworkCore.
+  This model includes the ApplicationRole class, ApplicationUserRole class, AdminController, AdminViewModels and Admin views. I have developed the appsettings.json
+  to include useful site settings, a smtp settings class and a sms settings class. This model has a utility service with stubbed out email and sms message layouts and an event
+  logger which records the events in a separate SQLite database. The first registered user automatically creates Admin, Manager and LogView roles and assigns the Admin
+  role to the user. This model uses roles and settings throughout.
+</p>
+<p>
+  For examples of sites based on this model, visit <a href="https://khaggerty.com/" target="_blank">KHaggerty.Com</a>.
+</p>

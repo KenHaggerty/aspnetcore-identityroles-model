@@ -22,7 +22,8 @@ namespace MVC
     {
       var builder = new ConfigurationBuilder()
           .SetBasePath(env.ContentRootPath)
-          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+          .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
       builder.AddEnvironmentVariables();
       Configuration = builder.Build();
@@ -41,7 +42,7 @@ namespace MVC
 
       // Used by Remember Me
       services.AddDataProtection().PersistKeysToFileSystem(
-          new DirectoryInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"/app_data"));
+          new DirectoryInfo(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"/"));
 
       services.AddIdentity<ApplicationUser, ApplicationRole>()
           .AddEntityFrameworkStores<ApplicationDbContext>()

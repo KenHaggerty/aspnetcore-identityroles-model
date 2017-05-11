@@ -3,16 +3,34 @@
 }
 <h2>@ViewData["Title"]</h2>
 <hr />
-<h3>@ViewData["Message"]</h3>
-
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
-
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+<div class="row">
+  <div class="col-sm-6 col-md-4 text-xs-center" style="margin-bottom:20px;">
+    <section>
+      <img src="~/images/ContactProfile2017.jpg" width="250" alt="Profile image" />
+    </section>
+  </div>
+  <div class="col-sm-6 col-md-4 text-xs-center" style="margin-bottom:20px;">
+    <section style="font-size: 20px;">
+      <h3 style="margin-top:0;margin-bottom:10px;">Ken Haggerty</h3>
+      <address style="margin-top:0;margin-bottom:10px;">
+        Deerfield Beach, FL 33441<br />
+        <abbr title="Phone">P:</abbr>
+        +1-561-283-1911<br />
+        <a href="mailto: Ken Haggerty (Ken@KHaggerty.Com)?subject=Paralle Tasks">Ken@KHaggerty.Com</a><br />
+        <a href="https://khaggerty.com/">https://KHaggerty.Com</a>
+      </address>
+      <h4 style="margin-top:5px;margin-bottom:10px;">Remote consultations by appointment.</h4>
+    </section>
+  </div>
+  <div class="col-sm-6 col-md-4 text-xs-center" style="margin-bottom:20px;">
+    <p>
+      If you find this model helpful, I would appreciate a donation.
+    </p>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="" role="form">
+      <input type="hidden" name="cmd" value="_s-xclick">
+      <input type="hidden" name="hosted_button_id" value="M6Z6SJHSUSD4G">
+      <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+      <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+    </form>
+  </div>
+</div>

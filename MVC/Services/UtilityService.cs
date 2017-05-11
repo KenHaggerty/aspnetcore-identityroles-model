@@ -16,14 +16,18 @@ namespace MVC.Services
     private readonly IEmailSender _emailSender;
     private readonly ISmsSender _smsSender;
     private readonly Settings _settings;
+    private readonly LogDbContext _logcontext;
+
     public UtilityService(
     IEmailSender emailSender,
     ISmsSender smsSender,
-    IOptionsSnapshot<Settings> settings)
+    IOptionsSnapshot<Settings> settings,
+    LogDbContext logcontext)
     {
       _emailSender = emailSender;
       _smsSender = smsSender;
       _settings = settings.Value;
+      _logcontext = logcontext;
     }
 
     public async void SendEmailSimpleTest()
@@ -128,12 +132,10 @@ namespace MVC.Services
         }
 
         var le = new LogEntry(subject, message, userName, controller, action, host, exceptionString, type);
-        using (var db = new LogDbContext())
-        {
-          await db.LogEntries.AddAsync(le);
+          await _logcontext.LogEntries.AddAsync(le);
           try
           {
-            await db.SaveChangesAsync();
+            await _logcontext.SaveChangesAsync();
           }
           catch (Exception ex)
           {
@@ -142,7 +144,6 @@ namespace MVC.Services
                 controller, action, userName, exceptionString, LogType.Critical, "Not Logged");
             sendemail = false;
           }
-        }
         if (sendemail && _settings.Logging.EmailErrorsOn)
         {
           SendSupportNotifyEmail(_settings.SupportEmail, subject, message, controller, action, userName, exceptionString, type, le.ID);
