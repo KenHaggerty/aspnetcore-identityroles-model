@@ -1,5 +1,5 @@
 # aspnetcore-identityroles-model
-A generic MVC, AspNet Core, EntityFramework Core model referencing the 1.1.2 SDK which includes roles and event log. Supports VS Code by openning the MVC folder then running dotnet restore, dotnet build.
+A generic MVC, AspNet Core, EntityFramework Core model referencing the 1.1.2 SDK which includes roles and event log. Supports VS Code by opening the MVC folder then running dotnet restore, dotnet build.
 
 Visual Studio 2017 was released for production on 2017-03-07, but I have been developing with VS 2017 since around the first of the year with the release candidate versions. You can generate a site almost like this model by installing the .NET Core command-line interface (CLI) tools or VS 2017 then using the command below from a command prompt inside an empty folder. This <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/tools/">article</a> explains the commands and installation options.
 <p>
