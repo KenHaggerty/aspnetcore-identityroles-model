@@ -175,7 +175,7 @@
                 dataType: "json"
             })
               .done(function (data) {
-              showLogEntryModal(response);
+                showLogEntryModal(data);
               })
               .fail(function (jqxhr, textStatus, error) {
                 var err = textStatus + ", " + error;
@@ -189,11 +189,11 @@
         function showLogEntryModal(response) {
             var responseJSON = '<dl class="dl-horizontal">';
             $.each(response, function (key, value) {
-                if (key == 'createDate') {
-                    var cdm = moment(value).add(@Model.TZoffset, 'm');
-                    responseJSON += '<dt>' + key + "</dt><dd> " + cdm.format("YYYY-MM-DD|hh:mm A") + '</dd>';
+                if (key == 'CreateDate') {
+                  var cdm = moment.utc(value, 'YYYY-MM-DD HH:mm').local().format('YYYY-MM-DD HH:mm');
+                  responseJSON += '<dt>' + key + "</dt><dd> " + cdm + '</dd>';
                 } else {
-                    responseJSON += '<dt>' + key + "</dt><dd> " + value + '</dd>';
+                  responseJSON += '<dt>' + key + "</dt><dd> " + value + '</dd>';
                 }
             });
             responseJSON += '</dl>';
