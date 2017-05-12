@@ -65,8 +65,8 @@ namespace MVC
         options.Cookies.ApplicationCookie.SlidingExpiration = true;
         options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(30);
         options.Cookies.TwoFactorRememberMeCookie.ExpireTimeSpan = TimeSpan.FromDays(10);
-        options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
-        options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+        options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
+        options.Cookies.ApplicationCookie.LogoutPath = "/Account/Logout";
 
         // User settings
         options.User.RequireUniqueEmail = true;
