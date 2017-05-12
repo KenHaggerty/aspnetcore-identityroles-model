@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <UserSecretsId>aspnet-MVC-214FFD11-1E0E-4A82-9113-325ECB33B6D2</UserSecretsId>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,11 @@
   <ItemGroup>
     <Content Include=".vscode\launch.json" />
     <Content Include=".vscode\tasks.json" />
-    <Content Include="wwwroot\js\jquery-validation-unobtrusive\.bower.json" />
+    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
 
   <ItemGroup>

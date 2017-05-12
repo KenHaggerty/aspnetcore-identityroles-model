@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "3.3.7",
-    "jquery": "~3.2.1",
+    "jquery": "3.2.1",
     "jquery-validation": "~1.16.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "js-cookie": "v2.1.4",
@@ -11,8 +11,6 @@
     "bootstrap-daterangepicker": "v2.1.25"
   },
   "resolutions": {
-    "jquery": "~3.2.1",
-    "jquery-validation": "~1.16.0",
-    "js-cookie": "v2.1.4"
+    "jquery": "3.2.1"
   }
 }

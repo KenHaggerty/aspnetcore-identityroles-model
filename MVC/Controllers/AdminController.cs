@@ -185,23 +185,23 @@ namespace MVC.Controllers
       try
       {
         var hostName = Dns.GetHostName();
-        ViewBag.ServerHost = "Server: HostName = " + hostName;
-        var remoteip = HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
-        var sb = new StringBuilder("RemoteIP = " + remoteip + ", IPs = ");
         var hostIPs = await Dns.GetHostAddressesAsync(hostName);
+        var sb = new StringBuilder("Server: HostName = " + hostName + ", DNS Host IPs = ");
         foreach (var ip in hostIPs)
         {
           sb.Append(ip + ", ");
         }
-        ViewBag.RemoteIPs = sb.ToString();
+        ViewBag.ServerHost = sb.ToString();
       }
       catch (Exception ex)
       {
         ViewBag.ServerHost = "DNS exception = " + ex.Message;
       }
-      var version = Assembly.GetEntryAssembly().GetName().Version.ToString();
-      ViewBag.Version = $"Version {version}";
+
+      ViewBag.RemoteIP = "RemoteIP = " + HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+      ViewBag.Version = $"Version {Assembly.GetEntryAssembly().GetName().Version.ToString()}";
       ViewBag.Description = "Admin - ControlPanel description.";
+
       var users = _userManager.Users;
       var ul = new List<UserViewModel>();
       foreach (ApplicationUser u in users)
@@ -372,11 +372,17 @@ namespace MVC.Controllers
       {
         if (string.IsNullOrEmpty(model.PhoneNumber))
         {
+          model.PhoneNumber = string.Empty;
           model.PhoneNumberConfirmed = false;
         }
         else if (model.PhoneNumber.Length < 8 && model.PhoneNumberConfirmed)
         {
+          model.PhoneNumber = string.Empty;
           model.PhoneNumberConfirmed = false;
+        }
+        else
+        {
+          model.PhoneNumberConfirmed = true;
         }
         var user = new ApplicationUser
         {
@@ -494,9 +500,19 @@ namespace MVC.Controllers
       }
       if (ModelState.IsValid)
       {
-        if (model.PhoneNumber != null && model.PhoneNumber.Length < 10 && model.PhoneNumberConfirmed)
+        if (string.IsNullOrEmpty(model.PhoneNumber))
         {
+          model.PhoneNumber = string.Empty;
           model.PhoneNumberConfirmed = false;
+        }
+        else if (model.PhoneNumber.Length < 8 && model.PhoneNumberConfirmed)
+        {
+          model.PhoneNumber = string.Empty;
+          model.PhoneNumberConfirmed = false;
+        }
+        else
+        {
+          model.PhoneNumberConfirmed = true;
         }
         var user = await _userManager.FindByNameAsync(model.UserName);
         if (user == null)

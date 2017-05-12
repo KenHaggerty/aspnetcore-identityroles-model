@@ -750,7 +750,7 @@ namespace MVC.Controllers
         _utilityService.InsertLogEntry(HttpContext, "Forgot Password Error", "ForgotPassword post model state is invalid.", LogType.Error, true);
         return View(model);
       }
-      var user = await _userManager.FindByNameAsync(model.Email);
+      var user = await _userManager.FindByEmailAsync(model.Email);
       if (user == null)
       {
         // Do reveal that the user does not exist redirect to Register
