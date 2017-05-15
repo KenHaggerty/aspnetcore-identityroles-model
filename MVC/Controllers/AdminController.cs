@@ -409,7 +409,7 @@ namespace MVC.Controllers
             sb.Append("<br/><br/>Please click <a href='");
             sb.Append(callbackUrl);
             sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name + ".<br/><br/>If you have any problem, please let me know.<br/>");
-            sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
+            sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
             sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
             //await _emailSender.SendEmailAsync(model.Email, "Email Verification for " + _settings.Name, sb.ToString());
@@ -436,7 +436,7 @@ namespace MVC.Controllers
               sb.Append("<br/><br/>Please click <a href='");
               sb.Append(callbackUrl);
               sb.Append("'>here</a> to login.<br/><br/>If you have any problem, please let me know.<br/>");
-              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Welcome Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
+              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Welcome Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
               sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
               //await _emailSender.SendEmailAsync(model.Email, "Welcome to " + _settings.Name, sb.ToString());
