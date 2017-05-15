@@ -1,73 +1,73 @@
-@model MVC.Models.AdminViewModels.UserViewModel
+@model MVC.Models.AdminViewModels.CreateUserViewModel
 
 @{
-    ViewData["Title"] = "New User";
+  ViewData["Title"] = "New User";
 }
 <div class="container-sub">
-    <h2>@ViewData["Title"]</h2>
-    <form asp-action="NewUser" class="form-horizontal">
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="UserName" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
+  <h2>@ViewData["Title"]</h2>
+  <form asp-action="NewUser" class="form-horizontal">
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+      <label asp-for="UserName" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label asp-for="Password" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <div class="checkbox-inline">
+          <input asp-for="MustChangePassword" class="with-font" />
+          <label asp-for="MustChangePassword"></label>
         </div>
-        <div class="form-group">
-            <label asp-for="Password" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label asp-for="Email" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <div class="checkbox-inline">
+          <input asp-for="EmailConfirmed" class="with-font" />
+          <label asp-for="EmailConfirmed"></label>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox-inline">
-                    <input asp-for="MustChangePassword" class="with-font" />
-                    <label asp-for="MustChangePassword"></label>
-                </div>
-            </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="PhoneNumber" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <div class="checkbox-inline">
+          <input asp-for="SendEmail" class="with-font" />
+          <label asp-for="SendEmail"></label>
         </div>
-        <div class="form-group">
-            <label asp-for="Email" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox-inline">
-                    <input asp-for="EmailConfirmed" class="with-font" onchange="(this.checked ? $(this).parent().parent().parent().next().show() : $(this).parent().parent().parent().next().hide())" />
-                    <label asp-for="EmailConfirmed"></label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group" style="display: none">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox-inline">
-                    <input asp-for="SendWelcome" class="with-font" />
-                    <label asp-for="SendWelcome"></label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PhoneNumber" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <a asp-action="UserIndex" class="btn btn-primary">Cancel</a>
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </div>
-    </form>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <a asp-action="UserIndex" class="btn btn-primary">Cancel</a>
+        <input type="submit" value="Create" class="btn btn-primary" />
+      </div>
+    </div>
+  </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
