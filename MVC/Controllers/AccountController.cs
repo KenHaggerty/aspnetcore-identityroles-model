@@ -448,6 +448,8 @@ namespace MVC.Controllers
         }
         if (await _userManager.Users.ToAsyncEnumerable().Count() == 1)
         {
+          user.LockoutEnabled = false;
+          await _userManager.UpdateAsync(user);
           var userResult = await _userManager.AddToRoleAsync(user, "AdminRole");
           if (!userResult.Succeeded)
           {

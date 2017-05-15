@@ -361,7 +361,8 @@ namespace MVC.Controllers
     [HttpPost]
     [Authorize(Roles = "AdminRole, ManagerRole")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> NewUser([Bind("UserName,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,Password,MustChangePassword,SendWelcome")] UserViewModel model)
+    public async Task<IActionResult> NewUser([Bind("UserName,Email,EmailConfirmed,PhoneNumber,TwoFactorEnabled,Password," +
+      "MustChangePassword,SendEmail")] CreateUserViewModel model)
     {
       if (!ModelState.IsValid)
       {
@@ -370,19 +371,14 @@ namespace MVC.Controllers
       }
       if (ModelState.IsValid)
       {
-        if (string.IsNullOrEmpty(model.PhoneNumber))
+        var phoneNumberConfirmed = false;
+        if (string.IsNullOrEmpty(model.PhoneNumber) || model.PhoneNumber.Length < 8)
         {
-          model.PhoneNumber = string.Empty;
-          model.PhoneNumberConfirmed = false;
-        }
-        else if (model.PhoneNumber.Length < 8 && model.PhoneNumberConfirmed)
-        {
-          model.PhoneNumber = string.Empty;
-          model.PhoneNumberConfirmed = false;
+          model.PhoneNumber = null;
         }
         else
         {
-          model.PhoneNumberConfirmed = true;
+          phoneNumberConfirmed = true;
         }
         var user = new ApplicationUser
         {
@@ -390,36 +386,37 @@ namespace MVC.Controllers
           Email = model.Email,
           EmailConfirmed = model.EmailConfirmed,
           PhoneNumber = model.PhoneNumber,
-          PhoneNumberConfirmed = model.PhoneNumberConfirmed
+          PhoneNumberConfirmed = phoneNumberConfirmed,
+          MustChangePassword = model.MustChangePassword
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {
-          if (!user.EmailConfirmed)
+          if (model.SendEmail)
           {
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-            var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Email Verification for " + _settings.Name);
-            sb.Append("</div><br/><div style='font-weight: normal; font-size: 14pt; font-family: Tahoma;'>");
-            sb.Append("Your administrator created a new user for this email address.<br/><br/>");
-            sb.Append("Your Login Name:&nbsp;");
-            sb.Append(user.UserName);
-            sb.Append("<br/>Your Password:&nbsp;");
-            sb.Append(model.Password);
-            sb.Append("<br/><br/>Please click <a href='");
-            sb.Append(callbackUrl);
-            sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name + ".<br/><br/>If you have any problem, please let me know.<br/>");
-            sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
-            sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
+            if (!user.EmailConfirmed)
+            {
+              var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+              var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+              var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Email Verification for " + _settings.Name);
+              sb.Append("</div><br/><div style='font-weight: normal; font-size: 14pt; font-family: Tahoma;'>");
+              sb.Append("Your administrator created a new user for this email address.<br/><br/>");
+              sb.Append("Your Login Name:&nbsp;");
+              sb.Append(user.UserName);
+              sb.Append("<br/>Your Password:&nbsp;");
+              sb.Append(model.Password);
+              sb.Append("<br/><br/>Please click <a href='");
+              sb.Append(callbackUrl);
+              sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name + ".<br/><br/>If you have any problem, please let me know.<br/>");
+              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
+              sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
-            //await _emailSender.SendEmailAsync(model.Email, "Email Verification for " + _settings.Name, sb.ToString());
-            await Task.Run(() => { Task.Delay(500); });
+              //await _emailSender.SendEmailAsync(model.Email, "Email Verification for " + _settings.Name, sb.ToString());
+              await Task.Run(() => { Task.Delay(500); });
 
-            _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Sent", user.UserName + " was sent the confirmation email.", LogType.Information);
-          }
-          else
-          {
-            if (model.SendWelcome)
+              _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Sent", user.UserName + " was sent the confirmation email.", LogType.Information);
+            }
+            else
             {
               var callbackUrl = Url.Action("Login", "Account", null, protocol: HttpContext.Request.Scheme);
               var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Welcome to " + _settings.Name);
@@ -436,7 +433,7 @@ namespace MVC.Controllers
               sb.Append("<br/><br/>Please click <a href='");
               sb.Append(callbackUrl);
               sb.Append("'>here</a> to login.<br/><br/>If you have any problem, please let me know.<br/>");
-              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Welcome Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
+              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Welcome Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
               sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
               //await _emailSender.SendEmailAsync(model.Email, "Welcome to " + _settings.Name, sb.ToString());
@@ -475,14 +472,19 @@ namespace MVC.Controllers
         return View();
       }
       var roles = await _userManager.GetRolesAsync(user);
-      var list = roles.OrderBy(q => q).ToList();
+      roles = roles.OrderBy(q => q).ToList();
+      var rstring = roles.Count > 0 ? string.Join(", ", roles) : "None";
       var userLogins = await _userManager.GetLoginsAsync(user);
-      var exlogins = "";
+      var sb = new StringBuilder();
       foreach (UserLoginInfo el in userLogins)
       {
-        exlogins += el.LoginProvider[0] + ",";
+        sb.Append(el.LoginProvider[0] + ", ");
       }
-      var usermodel = new EditUserViewModel(user, list, exlogins);
+      if (userLogins.Count > 0)
+      {
+        sb.Length = sb.Length - 2;
+      }
+      var usermodel = new EditUserViewModel(user, rstring, sb.ToString());
       return View(usermodel);
     }
 
@@ -500,19 +502,14 @@ namespace MVC.Controllers
       }
       if (ModelState.IsValid)
       {
-        if (string.IsNullOrEmpty(model.PhoneNumber))
+        var phoneNumberConfirmed = false;
+        if (string.IsNullOrEmpty(model.PhoneNumber) || model.PhoneNumber.Length < 8)
         {
-          model.PhoneNumber = string.Empty;
-          model.PhoneNumberConfirmed = false;
-        }
-        else if (model.PhoneNumber.Length < 8 && model.PhoneNumberConfirmed)
-        {
-          model.PhoneNumber = string.Empty;
-          model.PhoneNumberConfirmed = false;
+          model.PhoneNumber = null;
         }
         else
         {
-          model.PhoneNumberConfirmed = true;
+          phoneNumberConfirmed = true;
         }
         var user = await _userManager.FindByNameAsync(model.UserName);
         if (user == null)
@@ -535,8 +532,9 @@ namespace MVC.Controllers
         user.Email = model.Email;
         user.EmailConfirmed = model.EmailConfirmed;
         user.PhoneNumber = model.PhoneNumber;
-        user.PhoneNumberConfirmed = model.PhoneNumberConfirmed;
+        user.PhoneNumberConfirmed = phoneNumberConfirmed;
         user.TwoFactorEnabled = model.TwoFactorEnabled;
+        user.MustChangePassword = model.MustChangePassword;
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
