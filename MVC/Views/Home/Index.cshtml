@@ -80,15 +80,13 @@
   virtually anywhere in your site.
   This <a href="https://hassantariqblog.wordpress.com/2017/02/20/asp-net-core-step-by-step-guide-to-access-appsettings-json-in-web-project-and-class-library/" target="_blank">article</a>
   gives a very good explanation of how to configure this feature.
-  
+</p>
+<p class="text-justify">
   This model is referencing the 1.1.2 SDK, delivered by <a href="https://www.nuget.org/" target="_blank">NuGet</a> have
   matured to a very stable platform. Unfortunately, the rapid development of the frameworks has left a lot of the existing documentation with inaccuracies which is why I have
   published this repository. The template generates the Identity v2.2 ApplicationUser class and the database tables for roles and claims using EntityFrameworkCore.
   This model includes the ApplicationRole class, ApplicationUserRole class, AdminController, AdminViewModels and Admin views. I have developed the appsettings.json
   to include useful site settings, a smtp settings class and a sms settings class. This model has a utility service with stubbed out email and sms message layouts and an event
   logger which records the events in a separate SQLite database. The first registered user automatically creates Admin, Manager and LogView roles and assigns the Admin
-  role to the user. This model uses roles and settings throughout.
-</p>
-<p>
-  For examples of sites based on this model, visit <a href="https://khaggerty.com/" target="_blank">KHaggerty.Com</a>.
+  role and LockoutEnabled = false to the user. This model uses roles and settings throughout.
 </p>
