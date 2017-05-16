@@ -58,7 +58,8 @@ namespace MVC.Controllers
     // GET: /Admin/LogEntries
     [HttpGet]
     [Authorize(Roles = "AdminRole, LogViewRole")]
-    public async Task<ActionResult> LogEntries(int? Page, string Start = "", string End = "", LogType Type = LogType.All, string Country = "Recent Countries")
+    public async Task<ActionResult> LogEntries(int? Page, string Start = "", string End = "", LogType Type = LogType.All,
+      string Country = "Recent Countries")
     {
       _utilityService.SetViewCookie(HttpContext, "Log Entries View", "LogEntriesView", LogType.Information);
       var tzoffset = 0;
@@ -81,7 +82,8 @@ namespace MVC.Controllers
       }
       else
       {
-        startdate = DateTime.ParseExact(Start, "yyyy-MM-dd HH:mm zzz", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUniversalTime();
+        startdate = DateTime.ParseExact(Start, "yyyy-MM-dd HH:mm zzz", CultureInfo.InvariantCulture,
+          DateTimeStyles.AssumeUniversal).ToUniversalTime();
       }
       if (End.Length == 0 || !IsDatePicker(End))
       {
@@ -92,7 +94,8 @@ namespace MVC.Controllers
       }
       else
       {
-        enddate = DateTime.ParseExact(End, "yyyy-MM-dd HH:mm zzz", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUniversalTime();
+        enddate = DateTime.ParseExact(End, "yyyy-MM-dd HH:mm zzz", CultureInfo.InvariantCulture,
+          DateTimeStyles.AssumeUniversal).ToUniversalTime();
       }
 
       var itemsPerPage = 10;
@@ -131,7 +134,8 @@ namespace MVC.Controllers
       }
       catch (Exception ex)
       {
-        _utilityService.InsertLogEntry(HttpContext, "LogDbContext Error", "LogEntries threw an exception.", LogType.Critical, true, ex);
+        _utilityService.InsertLogEntry(HttpContext, "LogDbContext Error", "LogEntries threw an exception.",
+          LogType.Critical, true, ex);
         throw;
       }
       return View(v);
@@ -153,7 +157,8 @@ namespace MVC.Controllers
         }
         catch (Exception ex)
         {
-          _utilityService.InsertLogEntry(HttpContext, "LogDbContext Error", "LogEntry threw an exception.", LogType.Critical, true, ex);
+          _utilityService.InsertLogEntry(HttpContext, "LogDbContext Error", "LogEntry threw an exception.",
+            LogType.Critical, true, ex);
           return Json(new { error = "LogDbContext Exception." });
         }
       }
@@ -178,7 +183,8 @@ namespace MVC.Controllers
       if (user == null)
       {
         ModelState.AddModelError("", "The current user was not found.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin Error", "ControlPanel current user was not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin Error", "ControlPanel current user was not found.",
+          LogType.Error, true);
         return View();
       }
 
@@ -246,7 +252,8 @@ namespace MVC.Controllers
       if (user == null)
       {
         ModelState.AddModelError("", "The current user was not found.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "UserIndex current user was not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "UserIndex current user was not found.",
+          LogType.Error, true);
         return View();
       }
       var users = _userManager.Users;
@@ -321,14 +328,16 @@ namespace MVC.Controllers
       if (string.IsNullOrEmpty(id) == true)
       {
         ModelState.AddModelError("", "The id is null or empty.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Role Error", "SetUserRole post id is null or empty.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Role Error", "SetUserRole post id is null or empty.",
+          LogType.Error, true);
         return View("UserRoles");
       }
       var user = await _userManager.FindByNameAsync(id);
       if (user == null)
       {
         ModelState.AddModelError("", "The user was not found.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Role Error", "SetUserRole post current user was not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Role Error", "SetUserRole post current user was not found.",
+          LogType.Error, true);
         return View("UserRoles");
       }
 
@@ -336,12 +345,14 @@ namespace MVC.Controllers
       if (r == null)
       {
         await _userManager.RemoveFromRoleAsync(user, role);
-        _utilityService.InsertLogEntry(HttpContext, "Remove From Role", "The user " + user + " was removed from " + role + ".", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Remove From Role", "The user " + user + " was removed from " + role + ".",
+          LogType.Information);
       }
       else
       {
         await _userManager.AddToRoleAsync(user, role);
-        _utilityService.InsertLogEntry(HttpContext, "Add To Role", "The user " + user + " was added to " + role + ".", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Add To Role", "The user " + user + " was added to " + role + ".",
+          LogType.Information);
       }
       return RedirectToAction("UserRoles", "Admin", new RouteValueDictionary(new { id = id }));
     }
@@ -361,12 +372,13 @@ namespace MVC.Controllers
     [HttpPost]
     [Authorize(Roles = "AdminRole, ManagerRole")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> NewUser([Bind("UserName,Email,EmailConfirmed,PhoneNumber,TwoFactorEnabled,Password," +
-      "MustChangePassword,SendEmail")] CreateUserViewModel model)
+    public async Task<IActionResult> NewUser([Bind("UserName,Email,EmailConfirmed,PhoneNumber,TwoFactorEnabled," +
+      "Password,MustChangePassword,SendEmail")] CreateUserViewModel model)
     {
       if (!ModelState.IsValid)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "NewUser post model state is invalid.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "NewUser post model state is invalid.",
+          LogType.Error, true);
         return View(model);
       }
       if (ModelState.IsValid)
@@ -397,8 +409,10 @@ namespace MVC.Controllers
             if (!user.EmailConfirmed)
             {
               var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-              var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-              var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Email Verification for " + _settings.Name);
+              var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+              var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Email" +
+                " Verification for " + _settings.Name);
               sb.Append("</div><br/><div style='font-weight: normal; font-size: 14pt; font-family: Tahoma;'>");
               sb.Append("Your administrator created a new user for this email address.<br/><br/>");
               sb.Append("Your Login Name:&nbsp;");
@@ -407,19 +421,23 @@ namespace MVC.Controllers
               sb.Append(model.Password);
               sb.Append("<br/><br/>Please click <a href='");
               sb.Append(callbackUrl);
-              sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name + ".<br/><br/>If you have any problem, please let me know.<br/>");
-              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
+              sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name +
+                ".<br/><br/>If you have any problem, please let me know.<br/>");
+              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail +
+                "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
               sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
               //await _emailSender.SendEmailAsync(model.Email, "Email Verification for " + _settings.Name, sb.ToString());
               await Task.Run(() => { Task.Delay(500); });
 
-              _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Sent", user.UserName + " was sent the confirmation email.", LogType.Information);
+              _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Sent", user.UserName + " was sent the confirmation" +
+                " email.", LogType.Information);
             }
             else
             {
               var callbackUrl = Url.Action("Login", "Account", null, protocol: HttpContext.Request.Scheme);
-              var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Welcome to " + _settings.Name);
+              var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Welcome to "
+                + _settings.Name);
               sb.Append("</div><br/><div style='font-weight: normal; font-size: 14pt; font-family: Tahoma;'>");
               sb.Append("Your administrator created a new user for this email address.<br/><br/>");
               sb.Append("Your Login Name:&nbsp;");
@@ -433,16 +451,19 @@ namespace MVC.Controllers
               sb.Append("<br/><br/>Please click <a href='");
               sb.Append(callbackUrl);
               sb.Append("'>here</a> to login.<br/><br/>If you have any problem, please let me know.<br/>");
-              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Welcome Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
+              sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Welcome Email'>" + _settings.SupportEmail
+                + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
               sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
               //await _emailSender.SendEmailAsync(model.Email, "Welcome to " + _settings.Name, sb.ToString());
               await Task.Run(() => { Task.Delay(500); });
 
-              _utilityService.InsertLogEntry(HttpContext, "Email Welcome Sent", user.UserName + " was sent the welcome email.", LogType.Information);
+              _utilityService.InsertLogEntry(HttpContext, "Email Welcome Sent", user.UserName + " was sent the welcome email.",
+                LogType.Information);
             }
           }
-          _utilityService.InsertLogEntry(HttpContext, "Admin User Added", "Admin created a new account with password.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Admin User Added", "Admin created a new account with password.",
+            LogType.Information);
           return RedirectToAction("UserIndex");
         }
         var err = AddErrors(result);
@@ -544,7 +565,8 @@ namespace MVC.Controllers
         }
         else
         {
-          _utilityService.InsertLogEntry(HttpContext, "Admin User Updated", user.UserName + " was updated by admin.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Admin User Updated", user.UserName + " was updated by admin.",
+            LogType.Information);
         }
         return RedirectToAction("UserIndex");
       }
@@ -589,26 +611,30 @@ namespace MVC.Controllers
       if (string.IsNullOrEmpty(id) == true)
       {
         ModelState.AddModelError("", "The id is null or empty.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "DeleteUserConfirmed post id is null or empty.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "DeleteUserConfirmed post id is null or empty.",
+          LogType.Error, true);
         return View();
       }
       var user = await _userManager.FindByNameAsync(id);
       if (user == null)
       {
         ModelState.AddModelError("", "The user was not found.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "DeleteUserConfirmed post user was not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "DeleteUserConfirmed post user was not found.",
+          LogType.Error, true);
         return View();
       }
       var result = await _userManager.DeleteAsync(user);
       if (!result.Succeeded)
       {
         var err = AddErrors(result);
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "DeleteUserConfirmed post result = " + err, LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Error", "DeleteUserConfirmed post result = " + err,
+          LogType.Error, true);
         return View();
       }
       else
       {
-        _utilityService.InsertLogEntry(HttpContext, "Admin User Deleted", user.UserName + " was deleted by admin.", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Admin User Deleted", user.UserName + " was deleted by admin.",
+          LogType.Information);
       }
       return RedirectToAction("UserIndex");
     }
@@ -624,7 +650,8 @@ namespace MVC.Controllers
       if (user == null)
       {
         ModelState.AddModelError("", "The current user was not found.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "RoleIndex current user was not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "RoleIndex current user was not found.",
+          LogType.Error, true);
         return View();
       }
       var roles = await _userManager.GetRolesAsync(user);
@@ -663,7 +690,8 @@ namespace MVC.Controllers
     {
       if (!ModelState.IsValid)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "NewRole post model state is invalid.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "NewRole post model state is invalid.",
+          LogType.Error, true);
         return View(model);
       }
       if (ModelState.IsValid)
@@ -671,7 +699,8 @@ namespace MVC.Controllers
         if (await _roleManager.RoleExistsAsync(model.Name))
         {
           ModelState.AddModelError("", "The role name " + model.Name + " has already been used.");
-          _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "NewRole post role name " + model.Name + " has already been used.", LogType.Error, true);
+          _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "NewRole post role name " + model.Name
+            + " has already been used.", LogType.Error, true);
           return View(model);
         }
         else
@@ -685,7 +714,8 @@ namespace MVC.Controllers
           }
           else
           {
-            _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", model.Name + " was added by admin.", LogType.Information);
+            _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", model.Name + " was added by admin.",
+              LogType.Information);
           }
           return RedirectToAction("RoleIndex");
         }
@@ -748,7 +778,8 @@ namespace MVC.Controllers
         }
         else
         {
-          _utilityService.InsertLogEntry(HttpContext, "Admin Role Updated", model.Name + " was updated by admin.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Admin Role Updated", model.Name + " was updated by admin.",
+            LogType.Information);
         }
         return RedirectToAction("RoleIndex");
       }
@@ -790,7 +821,8 @@ namespace MVC.Controllers
       if (string.IsNullOrEmpty(id) == true)
       {
         ModelState.AddModelError("", "The id is null or empty.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "DeleteRoleConfirmed post id is null or empty.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "DeleteRoleConfirmed post id is null or empty.",
+          LogType.Error, true);
 
         return View();
       }
@@ -798,19 +830,22 @@ namespace MVC.Controllers
       if (role == null)
       {
         ModelState.AddModelError("", "The role was not found.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "DeleteRoleConfirmed post role was not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "DeleteRoleConfirmed post role was not found.",
+          LogType.Error, true);
         return View();
       }
       var roleResult = await _roleManager.DeleteAsync(role);
       if (!roleResult.Succeeded)
       {
         var err = AddErrors(roleResult);
-        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "DeleteRoleConfirmed post result = " + err, LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", "DeleteRoleConfirmed post result = " + err,
+          LogType.Error, true);
         return View();
       }
       else
       {
-        _utilityService.InsertLogEntry(HttpContext, "Admin Role Deleted", id + " was deleted by admin.", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Admin Role Deleted", id + " was deleted by admin.",
+          LogType.Information);
       }
       return RedirectToAction("RoleIndex");
     }
