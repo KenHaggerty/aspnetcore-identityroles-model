@@ -747,7 +747,8 @@ namespace MVC.Controllers
               _utilityService.InsertLogEntry(HttpContext, "Twitter Login Account Registered", message, LogType.Information, true);
               break;
             default:
-              _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Account Registered", message, LogType.Information, true);
+              _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Account Registered", message,
+                LogType.Information, true);
               break;
           }
           return RedirectToLocal(returnUrl);
