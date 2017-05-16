@@ -79,18 +79,21 @@ namespace MVC.Controllers
         if (user == null)
         {
           ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-          _utilityService.InsertLogEntry(HttpContext, "Invalid Login Attempt", model.UserName + " login attempt is invalid.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Invalid Login Attempt", model.UserName + " login attempt is invalid.",
+            LogType.Information);
           return View(model);
         }
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
+        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe,
+          lockoutOnFailure: true);
         if (result.Succeeded)
         {
           // Require the user to have a confirmed email before they can log on.
           //if (!await _userManager.IsEmailConfirmedAsync(user))
           //{
-          //    _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", model.UserName + " - email not confirmed. Show resend.", LogType.AcEmailNotConfirmed);
+          //    _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", model.UserName + " - email not confirmed." +
+          //      " Show resend.", LogType.AcEmailNotConfirmed);
           //    ViewBag.ShowResend = true;
           //    ViewBag.UserName = model.UserName;
           //    ModelState.AddModelError(string.Empty, "You must have a confirmed email to log in.");
@@ -98,15 +101,18 @@ namespace MVC.Controllers
           //}
           if (user.MustChangePassword)
           {
-            _utilityService.InsertLogEntry(HttpContext, "Must Change Password", model.UserName + " - must change password.", LogType.Information);
-            return RedirectToAction("MustChangePassword", "Account", new RouteValueDictionary(new { id = model.Password, returnUrl = returnUrl }));
+            _utilityService.InsertLogEntry(HttpContext, "Must Change Password", model.UserName + " - must change password.",
+              LogType.Information);
+            return RedirectToAction("MustChangePassword", "Account", new RouteValueDictionary(new { id = model.Password,
+              returnUrl = returnUrl }));
           }
           _utilityService.InsertLogEntry(HttpContext, "Logged In", model.UserName + " logged in.", LogType.Information);
           return RedirectToLocal(returnUrl);
         }
         else if (result.RequiresTwoFactor)
         {
-          _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", model.UserName + " requires two factor verification.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", model.UserName + " requires two factor verification.",
+            LogType.Information);
           return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
         }
         else if (result.IsLockedOut)
@@ -118,7 +124,8 @@ namespace MVC.Controllers
         {
           if (!await _userManager.IsEmailConfirmedAsync(user))
           {
-            _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", model.UserName + " - email not confirmed. Show resend.", LogType.Information);
+            _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", model.UserName + " - email not confirmed. Show resend.",
+              LogType.Information);
             ViewBag.ShowResend = true;
             ViewBag.UserName = model.UserName;
             ModelState.AddModelError(string.Empty, "You must have a confirmed email to log in.");
@@ -128,7 +135,8 @@ namespace MVC.Controllers
         else
         {
           ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-          _utilityService.InsertLogEntry(HttpContext, "Invalid Login Attempt", model.UserName + " login attempt is invalid.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Invalid Login Attempt", model.UserName + " login attempt is invalid.",
+            LogType.Information);
           return View(model);
         }
       }
@@ -148,7 +156,8 @@ namespace MVC.Controllers
       string username = HttpContext.Request.Form["LoginUserNameTextBox"];
       string password = HttpContext.Request.Form["LoginPasswordTextBox"];
       var rememberme = false;
-      if (!string.IsNullOrEmpty(HttpContext.Request.Form["RememberMeCheckbox"]) && Request.Form["RememberMeCheckbox"] == "on")
+      if (!string.IsNullOrEmpty(HttpContext.Request.Form["RememberMeCheckbox"]) &&
+        Request.Form["RememberMeCheckbox"] == "on")
       {
         rememberme = true;
       }
@@ -163,7 +172,8 @@ namespace MVC.Controllers
           if (info == null)
           {
             _utilityService.InsertLogEntry(HttpContext, "External Login Error", "LinkExternal post info is null.", LogType.Error, true);
-            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in but there was an error linking the external service.</li></ul>" });
+            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in" +
+              " but there was an error linking the external service.</li></ul>" });
           }
           var addresult = await _userManager.AddLoginAsync(user, info);
           if (addresult.Succeeded)
@@ -171,22 +181,28 @@ namespace MVC.Controllers
             switch (info.LoginProvider)
             {
               case "Facebook":
-                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Added", user.UserName + " - added Facebook.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Added", user.UserName + " - added Facebook.",
+                  LogType.Information);
                 break;
               case "GitHub":
-                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Added", user.UserName + " - added GitHub.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Added", user.UserName + " - added GitHub.",
+                  LogType.Information);
                 break;
               case "Google":
-                _utilityService.InsertLogEntry(HttpContext, "Google Login Added", user.UserName + " - added Google.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Google Login Added", user.UserName + " - added Google.",
+                  LogType.Information);
                 break;
               case "Microsoft":
-                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Added", user.UserName + " - added Microsoft.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Added", user.UserName + " - added Microsoft.",
+                  LogType.Information);
                 break;
               case "Twitter":
-                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Added", user.UserName + " - added Twitter.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Added", user.UserName + " - added Twitter.",
+                  LogType.Information);
                 break;
               default:
-                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Added", user.UserName + " - added " + info.LoginProvider + ".", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Added", user.UserName + " - added " +
+                  info.LoginProvider + ".", LogType.Information);
                 break;
             }
           }
@@ -195,37 +211,46 @@ namespace MVC.Controllers
             switch (info.LoginProvider)
             {
               case "Facebook":
-                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Error", "LinkExternal " + user.UserName + " - Facebook result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Error", "LinkExternal " + user.UserName +
+                  " - Facebook result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "GitHub":
-                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Error", "LinkExternal " + user.UserName + " - GitHub result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Error", "LinkExternal " + user.UserName +
+                  " - GitHub result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Google":
-                _utilityService.InsertLogEntry(HttpContext, "Google Login Error", "LinkExternal " + user.UserName + " - Google result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Google Login Error", "LinkExternal " + user.UserName +
+                  " - Google result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Microsoft":
-                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Error", "LinkExternal " + user.UserName + " - Microsoft result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Error", "LinkExternal " + user.UserName +
+                  " - Microsoft result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Twitter":
-                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Error", "LinkExternal " + user.UserName + " - Twitter result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Error", "LinkExternal " + user.UserName +
+                  " - Twitter result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               default:
-                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Error", "LinkExternal " + user.UserName + " - " + info.LoginProvider + " result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Error", "LinkExternal " + user.UserName +
+                  " - " + info.LoginProvider + " result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
             }
           }
           // Require the user to have a confirmed email before they can log on.
           //if (!await _userManager.IsEmailConfirmedAsync(user))
           //{
-          //    _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", username + " - email not confirmed. Show error.", LogType.AcEmailNotConfirmed);
-          //    ViewData["ErrorMessage"] = "<ul class='text-danger validation-summary-errors'><li>You must have a confirmed email to log in.</li><li>Cancel then attempt local Log in for resend option.</li></ul>";
+          //    _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", username + " - email not confirmed. Show error.",
+          //      LogType.AcEmailNotConfirmed);
+          //    ViewData["ErrorMessage"] = "<ul class='text-danger validation-summary-errors'><li>You must have a confirmed email" +
+          //    " to log in.</li><li>Cancel then attempt local Log in for resend option.</li></ul>";
           //    ViewData["ReturnUrl"] = returnUrl;
           //    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
           //}
 
           if (user.MustChangePassword)
           {
-            _utilityService.InsertLogEntry(HttpContext, "Must Change Password", username + " - must change password.", LogType.Information);
+            _utilityService.InsertLogEntry(HttpContext, "Must Change Password", username + " - must change password.",
+              LogType.Information);
             return Json(new { success = true, responseText = $"/Account/MustChangePassword?id={password}&returnUrl={returnUrl}" });
           }
           _utilityService.InsertLogEntry(HttpContext, "Logged In", username + " logged in.", LogType.Information);
@@ -238,7 +263,9 @@ namespace MVC.Controllers
           if (info == null)
           {
             _utilityService.InsertLogEntry(HttpContext, "External Login Error", "LinkExternal post info is null.", LogType.Error, true);
-            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in but there was an error linking the external service.</li></ul>" });
+            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in" +
+              " but there was an error linking the external service.</li></ul>"
+            });
           }
           var addresult = await _userManager.AddLoginAsync(user, info);
           if (addresult.Succeeded)
@@ -246,22 +273,28 @@ namespace MVC.Controllers
             switch (info.LoginProvider)
             {
               case "Facebook":
-                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Added", user.UserName + " - added Facebook. Requires Two Factor.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Added", user.UserName + " - added Facebook. Requires" +
+                  " Two Factor.", LogType.Information);
                 break;
               case "GitHub":
-                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Added", user.UserName + " - added GitHub. Requires Two Factor.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Added", user.UserName + " - added GitHub. Requires Two Factor.",
+                  LogType.Information);
                 break;
               case "Google":
-                _utilityService.InsertLogEntry(HttpContext, "Google Login Added", user.UserName + " - added Google. Requires Two Factor.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Google Login Added", user.UserName + " - added Google. Requires Two Factor.",
+                  LogType.Information);
                 break;
               case "Microsoft":
-                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Added", user.UserName + " - added Microsoft. Requires Two Factor.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Added", user.UserName + " - added Microsoft. Requires Two" +
+                  " Factor.", LogType.Information);
                 break;
               case "Twitter":
-                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Added", user.UserName + " - added Twitter. Requires Two Factor.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Added", user.UserName + " - added Twitter. Requires Two Factor.",
+                  LogType.Information);
                 break;
               default:
-                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Added", user.UserName + " - added " + info.LoginProvider + ". Requires Two Factor.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Added", user.UserName + " - added " +
+                  info.LoginProvider + ". Requires Two Factor.", LogType.Information);
                 break;
             }
           }
@@ -270,41 +303,54 @@ namespace MVC.Controllers
             switch (info.LoginProvider)
             {
               case "Facebook":
-                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Error", "LinkExternal Requires Two Factor. " + user.UserName + " - Facebook result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
+                  " - Facebook result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "GitHub":
-                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Error", "LinkExternal Requires Two Factor. " + user.UserName + " - GitHub result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
+                  " - GitHub result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Google":
-                _utilityService.InsertLogEntry(HttpContext, "Google Login Error", "LinkExternal Requires Two Factor. " + user.UserName + " - Google result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Google Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
+                  " - Google result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Microsoft":
-                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Error", "LinkExternal Requires Two Factor. " + user.UserName + " - Microsoft result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
+                  " - Microsoft result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Twitter":
-                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Error", "LinkExternal Requires Two Factor. " + user.UserName + " - Twitter result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
+                  " - Twitter result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               default:
-                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Error", "LinkExternal Requires Two Factor. " + user.UserName + " - " + info.LoginProvider + " result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Error", "LinkExternal Requires Two Factor. " +
+                  user.UserName + " - " + info.LoginProvider + " result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
             }
-            //return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in but there was an error linking the external service.</li></ul>" });
+            //return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in" +
+            //  " but there was an error linking the external service.</li></ul>" });
           }
 
-          _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", username + " requires two factor verification.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", username + " requires two factor verification.",
+            LogType.Information);
           return Json(new { success = true, responseText = $"/Account/SendCode?returnUrl={returnUrl}&RememberMe={rememberme}" });
         }
         else if (result.IsLockedOut)
         {
           _utilityService.InsertLogEntry(HttpContext, "Login Lockout", username + " account locked out.", LogType.Error, true);
-          return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>This account has been locked out.</li><li>Please try again later.</li></ul>" });
+          return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>This account has been" +
+              " locked out.</li><li>Please try again later.</li></ul>"
+          });
         }
         else if (result.IsNotAllowed)
         {
           if (!await _userManager.IsEmailConfirmedAsync(user))
           {
-            _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", username + " - email not confirmed. Show error.", LogType.Information);
-            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You must have a confirmed email to log in.</li><li>Cancel then attempt local Log in for resend option.</li></ul>" });
+            _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", username + " - email not confirmed. Show error.",
+              LogType.Information);
+            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You must have a" +
+              " confirmed email to log in.</li><li>Cancel then attempt local Log in for resend option.</li></ul>"
+            });
           }
           else
           {
@@ -314,14 +360,20 @@ namespace MVC.Controllers
         }
         else
         {
-          _utilityService.InsertLogEntry(HttpContext, "Invalid Login Attempt", username + " login attempt is invalid.", LogType.Information);
-          return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>Invalid login attempt.</li></ul>" });
+          _utilityService.InsertLogEntry(HttpContext, "Invalid Login Attempt", username + " login attempt is invalid.",
+            LogType.Information);
+          return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>Invalid login" +
+              " attempt.</li></ul>"
+          });
         }
       }
       else
       {
-        _utilityService.InsertLogEntry(HttpContext, "External Login Error", $"LinkExternal post user={username} is null.", LogType.Error, true);
-        return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>Invalid login attempt.</li></ul>" });
+        _utilityService.InsertLogEntry(HttpContext, "External Login Error", $"LinkExternal post user={username} is null.",
+          LogType.Error, true);
+        return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>Invalid login" +
+              " attempt.</li></ul>"
+        });
       }
     }
 
@@ -331,7 +383,8 @@ namespace MVC.Controllers
     public IActionResult MustChangePassword(string id = "", string returnUrl = null)
     {
       ViewData["Theme"] = Request.Cookies["TempThemeCookie"];
-      _utilityService.SetViewCookie(HttpContext, "Must Change Password View", "PasswordMustChangeView", LogType.Information);
+      _utilityService.SetViewCookie(HttpContext, "Must Change Password View", "PasswordMustChangeView",
+        LogType.Information);
       return View(new MustChangePasswordViewModel(id, returnUrl));
     }
 
@@ -344,7 +397,8 @@ namespace MVC.Controllers
       ViewData["Theme"] = Request.Cookies["TempThemeCookie"];
       if (!ModelState.IsValid)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post model state is invalid.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post model state is invalid.",
+          LogType.Error, true);
         return View(model);
       }
       try
@@ -352,7 +406,8 @@ namespace MVC.Controllers
         var user = await GetCurrentUserAsync();
         if (user == null)
         {
-          _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post user not found.", LogType.Error, true);
+          _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post user not found.",
+            LogType.Error, true);
           return View("Error");
         }
         var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
@@ -360,20 +415,23 @@ namespace MVC.Controllers
         {
           user.MustChangePassword = false;
           await _userManager.UpdateAsync(user);
-          _utilityService.InsertLogEntry(HttpContext, "Must Change Password Success", user.UserName + " - changed password successfully.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Must Change Password Success", user.UserName +
+            " - changed password successfully.", LogType.Information);
           //return RedirectToAction("Index", "Manage");
           return RedirectToLocal(model.ReturnURL);
         }
         else
         {
           var err = AddErrors(result);
-          _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post result = " + err, LogType.Error, true);
+          _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post result = " +
+            err, LogType.Error, true);
           return View(model);
         }
       }
       catch (Exception ex)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post threw exception.", LogType.Error, true, ex);
+        _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post threw exception.",
+          LogType.Error, true, ex);
         await _signInManager.SignOutAsync();
         return RedirectToAction("Login", "Account");
       }
@@ -414,10 +472,12 @@ namespace MVC.Controllers
           if (!roleResult.Succeeded)
           {
             ModelState.AddModelError("", "Error while creating Admin role!");
-            _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", model.UserName + " error while creating Admin role.", LogType.Error, true);
+            _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", model.UserName + " error while creating Admin role.",
+              LogType.Error, true);
             return View(model);
           }
-          _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", model.UserName + " created Admin role.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", model.UserName + " created Admin role.",
+            LogType.Information);
         }
         if (!_roleManager.RoleExistsAsync("LogViewRole").Result)
         {
@@ -426,25 +486,31 @@ namespace MVC.Controllers
           if (!roleResult.Succeeded)
           {
             ModelState.AddModelError("", "Error while creating LogView role.");
-            _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", model.UserName + " - error while creating LogView role.", LogType.Error, true);
+            _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", model.UserName + " - error while creating LogView role.",
+              LogType.Error, true);
             return View(model);
           }
           else
           {
-            _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", user.UserName + " created LogView role.", LogType.Information);
+            _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", user.UserName + " created LogView role.",
+              LogType.Information);
           }
         }
         if (!_roleManager.RoleExistsAsync("ManagerRole").Result)
         {
-          var role = new ApplicationRole() { Name = "ManagerRole", Description = "Application Role to perform user but not role functions." };
+          var role = new ApplicationRole() { Name = "ManagerRole", Description = "Application Role to perform user but not role" +
+              " functions."
+          };
           var roleResult = await _roleManager.CreateAsync(role);
           if (!roleResult.Succeeded)
           {
             ModelState.AddModelError("", "Error while creating Manager role!");
-            _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", model.UserName + " error while creating Manager role.", LogType.Error, true);
+            _utilityService.InsertLogEntry(HttpContext, "Admin Role Error", model.UserName + " error while creating Manager role.",
+              LogType.Error, true);
             return View(model);
           }
-          _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", model.UserName + " created Manager role.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Admin Role Added", model.UserName + " created Manager role.",
+            LogType.Information);
         }
         if (await _userManager.Users.ToAsyncEnumerable().Count() == 1)
         {
@@ -454,29 +520,36 @@ namespace MVC.Controllers
           if (!userResult.Succeeded)
           {
             var uerr = AddErrors(userResult);
-            _utilityService.InsertLogEntry(HttpContext, "Admin User Role Error", model.UserName + " error add first user to Admin role result = " + uerr, LogType.Error, true);
+            _utilityService.InsertLogEntry(HttpContext, "Admin User Role Error", model.UserName + " error add first user to Admin" +
+              " role result = " + uerr, LogType.Error, true);
             return View(model);
           }
-          _utilityService.InsertLogEntry(HttpContext, "Admin User Role Added", model.UserName + " added first user to Admin role.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Admin User Role Added", model.UserName + " added first user to Admin role.",
+            LogType.Information);
           user.EmailConfirmed = true;
           await _userManager.UpdateAsync(user);
           return RedirectToAction("Login", "Account");
         }
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-        var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Email Verification for " + _settings.Name);
+        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code },
+          protocol: HttpContext.Request.Scheme);
+        var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Email" +
+              " Verification for " + _settings.Name);
         sb.Append("</div><br/><div style='font-weight: normal; font-size: 14pt; font-family: Tahoma;'>");
         sb.Append(user.UserName);
         sb.Append(",<br/>Thank you for your interest. Please click <a href='");
         sb.Append(callbackUrl);
-        sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name + ".<br/><br/>If you have any problem, please let me know.<br/>");
-        sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "? subject=Verify Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
+        sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name +
+          ".<br/><br/>If you have any problem, please let me know.<br/>");
+        sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "? subject=Verify Email'>" + _settings.SupportEmail +
+          "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
         sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
         //await _emailSender.SendEmailAsync(model.Email, "Email Verification for " + _settings.Name, sb.ToString());
         await Task.Run(() => { Task.Delay(500); });
 
-        _utilityService.InsertLogEntry(HttpContext, "Register Added", user.UserName + " created a new account with password.", LogType.Information, true);
+        _utilityService.InsertLogEntry(HttpContext, "Register Added", user.UserName + " created a new account with password.",
+          LogType.Information, true);
         return View("VerifyEmailConfirmation");
       }
       var err = AddErrors(result);
@@ -543,13 +616,15 @@ namespace MVC.Controllers
       if (remoteError != null)
       {
         ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
-        _utilityService.InsertLogEntry(HttpContext, "External Login Error", $"ExternalLoginCallback error from external provider: {remoteError}", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "External Login Error",
+          $"ExternalLoginCallback error from external provider: {remoteError}", LogType.Error, true);
         return View(nameof(Login));
       }
       var info = await _signInManager.GetExternalLoginInfoAsync();
       if (info == null)
       {
-        _utilityService.InsertLogEntry(HttpContext, "External Login Error", "ExternalLoginCallback info is null.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "External Login Error", "ExternalLoginCallback info is null.",
+          LogType.Error, true);
         return RedirectToAction(nameof(Login));
       }
 
@@ -583,7 +658,8 @@ namespace MVC.Controllers
       }
       if (result.RequiresTwoFactor)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", info.LoginProvider + " login requires two factor verification.", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", info.LoginProvider + " login requires two factor verification.",
+          LogType.Information);
         return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
       }
       if (result.IsLockedOut)
@@ -632,14 +708,16 @@ namespace MVC.Controllers
     {
       if (!ModelState.IsValid)
       {
-        _utilityService.InsertLogEntry(HttpContext, "External Login Error", "ExternalLoginConfirmation post model state is invalid.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "External Login Error", "ExternalLoginConfirmation post model state is invalid.",
+          LogType.Error, true);
         return View(model);
       }
       // Get the information about the user from the external login provider
       var info = await _signInManager.GetExternalLoginInfoAsync();
       if (info == null)
       {
-        _utilityService.InsertLogEntry(HttpContext, "External Login Error", "ExternalLoginConfirmation post info is null.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "External Login Error", "ExternalLoginConfirmation post info is null.",
+          LogType.Error, true);
         return View("ExternalLoginFailure");
       }
       var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
@@ -711,7 +789,8 @@ namespace MVC.Controllers
       _utilityService.SetViewCookie(HttpContext, "Confirm Email View", "ConfirmEmailView", LogType.Information);
       if (userId == null || code == null)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "ConfirmEmail userId or code is null.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "ConfirmEmail userId or code is null.",
+          LogType.Error, true);
         return View("Error");
       }
       var user = await _userManager.FindByIdAsync(userId);
@@ -749,31 +828,38 @@ namespace MVC.Controllers
     {
       if (!ModelState.IsValid)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Forgot Password Error", "ForgotPassword post model state is invalid.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Forgot Password Error", "ForgotPassword post model state is invalid.",
+          LogType.Error, true);
         return View(model);
       }
       var user = await _userManager.FindByEmailAsync(model.Email);
       if (user == null)
       {
         // Do reveal that the user does not exist redirect to Register
-        _utilityService.InsertLogEntry(HttpContext, "Forgot Password Error", "ForgotPassword post user not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Forgot Password Error", "ForgotPassword post user not found.",
+          LogType.Error, true);
         return RedirectToAction(nameof(AccountController.Register), "Account");
       }
       if (!(await _userManager.IsEmailConfirmedAsync(user)))
       {
         // Don't reveal that the user email is not confirmed
-        _utilityService.InsertLogEntry(HttpContext, "Forgot Password Error", user.UserName + " - ForgotPassword post user email not confirmed.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Forgot Password Error", user.UserName + " - ForgotPassword post user email" +
+              " not confirmed.", LogType.Error, true);
         return View("ForgotPasswordConfirmation");
       }
       var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-      var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-      var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Reset Password for " + _settings.Name);
+      var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code },
+        protocol: HttpContext.Request.Scheme);
+      var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>" +
+              "Reset Password for " + _settings.Name);
       sb.Append("</div><br/><div style='font-weight: normal; font-size: 14pt; font-family: Tahoma;'>");
       sb.Append(user.UserName);
       sb.Append(",<br/>Please click <a href='");
       sb.Append(callbackUrl);
-      sb.Append("'>here</a> to reset your password for " + _settings.Name + ".<br/><br/>If you have any problem, please let me know.<br/>");
-      sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Reset Password'>" + _settings.SupportEmail + "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
+      sb.Append("'>here</a> to reset your password for " + _settings.Name + ".<br/><br/>If you have any problem, please let me" +
+              " know.<br/>");
+      sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Reset Password'>" + _settings.SupportEmail +
+        "</a><br/><br/>Thank you,<br/>" + _settings.SupportName + "<br/><br/>");
       sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
       //await _emailSender.SendEmailAsync(model.Email, "Reset Password", sb.ToString());
@@ -789,7 +875,8 @@ namespace MVC.Controllers
     [AllowAnonymous]
     public IActionResult ForgotPasswordConfirmation()
     {
-      _utilityService.SetViewCookie(HttpContext, "Forgot Password Confirmation View", "ForgotPasswordConfirmationView", LogType.Information);
+      _utilityService.SetViewCookie(HttpContext, "Forgot Password Confirmation View", "ForgotPasswordConfirmationView",
+        LogType.Information);
       return View();
     }
 
@@ -813,35 +900,43 @@ namespace MVC.Controllers
       ViewData["Theme"] = Request.Cookies["TempThemeCookie"];
       if (!ModelState.IsValid)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "VerifyEmail post model state is invalid.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "VerifyEmail post model state is invalid.",
+          LogType.Error, true);
         return View(model);
       }
       var user = await _userManager.FindByEmailAsync(model.Email);
       if (user == null)
       {
         // Don't reveal that the email does not exist
-        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "VerifyEmail post user not found.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "VerifyEmail post user not found.",
+          LogType.Error, true);
         return View("VerifyEmailConfirmation");
       }
       else if (user.UserName.ToLower() != model.UserName.ToLower())
       {
         // Don't reveal that the email does not match
-        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "VerifyEmail post username does not match.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "VerifyEmail post username does not match.",
+          LogType.Error, true);
         return View("VerifyEmailConfirmation");
       }
       else
       {
-        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+        // For more information on how to enable account confirmation and password reset please visit 
+        //  http://go.microsoft.com/fwlink/?LinkID=532713
         // Send an email with this link
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-        var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>Email Verification for " + _settings.Name);
+        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code },
+          protocol: HttpContext.Request.Scheme);
+        var sb = new StringBuilder("<html><body><div style='font-weight: bold; font-size: 24pt; font-family: Tahoma;'>" +
+              "Email Verification for " + _settings.Name);
         sb.Append("</div><br/><div style='font-weight: normal; font-size: 14pt; font-family: Tahoma;'>");
         sb.Append(user.UserName);
         sb.Append(",<br/>Thank you for your interest. Please click <a href='");
         sb.Append(callbackUrl);
-        sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name + ".<br/><br/>If you have any problem, please let me know.<br/>");
-        sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail + "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
+        sb.Append("'>here</a> to verify your email.<br/> You must verify your email before you log in to " + _settings.Name +
+          ".<br/><br/>If you have any problem, please let me know.<br/>");
+        sb.Append("Email  <a href='mailto:" + _settings.SupportEmail + "?subject=Verify Email'>" + _settings.SupportEmail +
+          "</a><br/><br/>Thank you again,<br/>" + _settings.SupportName + "<br/><br/>");
         sb.Append("THIS IS AN AUTOMATED MESSAGE.</div></body></html>");
 
         //await _emailSender.SendEmailAsync(model.Email, "Email Verification for " + _settings.Name, sb.ToString());
@@ -897,7 +992,8 @@ namespace MVC.Controllers
     [AllowAnonymous]
     public IActionResult ResetPasswordConfirmation()
     {
-      _utilityService.SetViewCookie(HttpContext, "Password Reset Confirmation View", "PasswordResetConfirmationView", LogType.Information);
+      _utilityService.SetViewCookie(HttpContext, "Password Reset Confirmation View", "PasswordResetConfirmationView",
+        LogType.Information);
       return View();
     }
 
@@ -962,7 +1058,8 @@ namespace MVC.Controllers
         _utilityService.InsertLogEntry(HttpContext, "Two Factor Send Code", "User sent code to phone.", LogType.Information);
       }
 
-      return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+      return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider,
+        ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
     }
 
     //
@@ -996,7 +1093,8 @@ namespace MVC.Controllers
       // The following code protects for brute force attacks against the two factor codes.
       // If a user enters incorrect codes for a specified amount of time then the user account
       // will be locked out for a specified amount of time.
-      var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
+      var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe,
+        model.RememberBrowser);
       if (result.Succeeded)
       {
         _utilityService.InsertLogEntry(HttpContext, "Two Factor Logged In", "User logged in with two factors.", LogType.Information);
