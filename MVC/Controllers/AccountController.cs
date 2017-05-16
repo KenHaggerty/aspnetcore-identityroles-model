@@ -93,7 +93,7 @@ namespace MVC.Controllers
           //if (!await _userManager.IsEmailConfirmedAsync(user))
           //{
           //    _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", model.UserName + " - email not confirmed." +
-          //      " Show resend.", LogType.AcEmailNotConfirmed);
+          //      " Show resend.", LogType.Information);
           //    ViewBag.ShowResend = true;
           //    ViewBag.UserName = model.UserName;
           //    ModelState.AddModelError(string.Empty, "You must have a confirmed email to log in.");
@@ -237,11 +237,12 @@ namespace MVC.Controllers
                 break;
             }
           }
+
           // Require the user to have a confirmed email before they can log on.
           //if (!await _userManager.IsEmailConfirmedAsync(user))
           //{
           //    _utilityService.InsertLogEntry(HttpContext, "Email Not Confirmed", username + " - email not confirmed. Show error.",
-          //      LogType.AcEmailNotConfirmed);
+          //      LogType.Information);
           //    ViewData["ErrorMessage"] = "<ul class='text-danger validation-summary-errors'><li>You must have a confirmed email" +
           //    " to log in.</li><li>Cancel then attempt local Log in for resend option.</li></ul>";
           //    ViewData["ReturnUrl"] = returnUrl;
