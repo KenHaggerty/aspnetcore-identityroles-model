@@ -3,7 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <UserSecretsId>aspnet-MVC-214FFD11-1E0E-4A82-9113-325ECB33B6D2</UserSecretsId>
-    <Version>1.0.2.0</Version>
+    <Version>1.0.2.1</Version>
+    <Description>A generic MVC, AspNet Core, EntityFramework Core model referencing the 1.1.2 SDK which includes roles and event log. Supports VS Code by opening the MVC folder and running dotnet restore from the terminal window.</Description>
+    <Copyright>Copyright (c) 2017 Ken Haggerty</Copyright>
+    <PackageLicenseUrl>https://github.com/KenHaggerty/aspnetcore-identityroles-model/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl />
+    <RepositoryUrl>https://github.com/KenHaggerty/aspnetcore-identityroles-model</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageReleaseNotes>Removed wwwroot/css/fonts/glyphicons includes from MVC.csproj to fix VS Code's Duplicate Content error.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,11 +23,6 @@
   <ItemGroup>
     <Content Include=".vscode\launch.json" />
     <Content Include=".vscode\tasks.json" />
-    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="wwwroot\css\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,10 +60,6 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.1" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\css\bootstrap\" />
   </ItemGroup>
 
 </Project>
