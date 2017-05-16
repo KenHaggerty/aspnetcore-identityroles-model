@@ -65,7 +65,8 @@ namespace MVC.Services
     }
 
 
-    public void SetViewCookie(HttpContext context, string subject, string name, LogType type = LogType.Information, bool sendemail = false)
+    public void SetViewCookie(HttpContext context, string subject, string name, LogType type = LogType.Information,
+      bool sendemail = false)
     {
       if (_settings.Logging.CookiesOn)
       {
@@ -93,7 +94,8 @@ namespace MVC.Services
         }
       }
     }
-    public void DeleteViewCookie(HttpContext context, string subject, string name, LogType type = LogType.Information, bool sendemail = false)
+    public void DeleteViewCookie(HttpContext context, string subject, string name, LogType type = LogType.Information,
+      bool sendemail = false)
     {
       HttpRequest curRequest = context.Request;
       if (curRequest.Cookies != null && curRequest.Cookies.Count > 0)
@@ -110,7 +112,8 @@ namespace MVC.Services
       }
     }
 
-    public async void InsertLogEntry(HttpContext context, string subject, string message, LogType type = LogType.Information, bool sendemail = false,
+    public async void InsertLogEntry(HttpContext context, string subject, string message, LogType type = LogType.Information,
+      bool sendemail = false,
         Exception e = null, string controller = "", string action = "")
     {
       if (_settings.Logging.LogginOn)
@@ -119,7 +122,8 @@ namespace MVC.Services
         action = (action.Length > 0 ? action : context.GetRouteValue("action").ToString());
 
         var host = _settings.Host;
-        var userName = (context.User.Identity.Name != null && context.User.Identity.Name.Length > 0 ? context.User.Identity.Name : "Unknown");
+        var userName = (context.User.Identity.Name != null &&
+          context.User.Identity.Name.Length > 0 ? context.User.Identity.Name : "Unknown");
 
         var exceptionString = string.Empty;
         if (e == null)
@@ -140,7 +144,8 @@ namespace MVC.Services
           catch (Exception ex)
           {
             exceptionString = ex.ToString();
-            SendSupportNotifyEmail(_settings.SupportEmail, "Exception LogDbContext", "SaveChangesAsync threw an exception. Check the SQLite file integrity.",
+            SendSupportNotifyEmail(_settings.SupportEmail, "Exception LogDbContext",
+              "SaveChangesAsync threw an exception. Check the SQLite file integrity.",
                 controller, action, userName, exceptionString, LogType.Critical, "Not Logged");
             sendemail = false;
           }
@@ -151,7 +156,8 @@ namespace MVC.Services
       }
     }
 
-    public async void SendSupportNotifyEmail(string email, string subject, string message, string controller, string action, string userName,
+    public async void SendSupportNotifyEmail(string email, string subject, string message, string controller, string action,
+      string userName,
         string exceptionString = "", LogType type = LogType.Information, string logid = "")
     {
       var stype = Enum.GetName(typeof(LogType), type);

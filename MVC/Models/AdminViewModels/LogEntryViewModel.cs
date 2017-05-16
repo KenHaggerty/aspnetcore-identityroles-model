@@ -5,7 +5,6 @@ namespace MVC.Models.AdminViewModels
 {
     public class LogEntryViewModel
     {        
-        //SendAdminNotificationEmail(subject, message, country, controller, action, username, type, queryJSON, cookieJSON, headerJSON, ipinfoJSON, host, agent, w, h);
         [Key]
         public string ID { get; set; }
         [Required]
@@ -28,8 +27,9 @@ namespace MVC.Models.AdminViewModels
         
         public LogEntryViewModel() { }
 
-        public LogEntryViewModel(string id, DateTime createdate, string host, string subject, string message, string username, string country, string agent, string ipinfoJSON,
-            string controller, string action, string headerJSON, string queryJSON, string exceptionString, LogType type = LogType.Information, int vpwidth = 0, int vpheight = 0)
+        public LogEntryViewModel(string id, DateTime createdate, string host, string subject, string message, string username,
+          string country, string agent, string ipinfoJSON, string controller, string action, string headerJSON, string queryJSON,
+          string exceptionString, LogType type = LogType.Information, int vpwidth = 0, int vpheight = 0)
         {
             ID = id;
             CreateDate = createdate;

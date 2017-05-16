@@ -25,7 +25,8 @@
         {
             <tr>
                 <td>
-                    <form id="@item.Name" asp-controller="Admin" asp-action="SetUserRole" asp-route-id="@ViewData["UserName"]" asp-route-role="@item.Name" method="post"  class="form-horizontal">
+                    <form id="@item.Name" asp-controller="Admin" asp-action="SetUserRole" asp-route-id="@ViewData["UserName"]"
+                          asp-route-role="@item.Name" method="post"  class="form-horizontal">
                         <div class="checkbox">
                             <input type="checkbox" class="with-font" id="Checkbox@(item.Name)" @(item.Selected ? "checked=checked" : "")
                                    name="@item.Name" onchange="$('#@item.Name').submit();">
