@@ -87,8 +87,8 @@
   The templated site supports user registration and logins with a local SQLite database and it has a minimal logger configured for
   debugging. The templated site gets you pretty far and will restore, build and  launch from VS 2017. One new feature uses an
   appsettings.json  file to inject key-value settings on to the context making them available virtually anywhere in your site. This
-  <a href="https://hassantariqblog.wordpress.com/2017/02/20/asp-net-core-step-by-step-guide-to-access-appsettings-json-in-web-project-and-class-library/"
-     target="_blank">article</a> gives a very good explanation of how to configure this feature.
+  <a href="https://hassantariqblog.wordpress.com/2017/02/20/asp-net-core-step-by-step-guide-to-access-appsettings-json-in-
+web-project-and-class-library/" target="_blank">article</a> gives a very good explanation of how to configure this feature.
 </p>
 <p class="text-justify">
   This model uses the 1.1.2 SDK and the referenced packages which are delivered by <a href="https://www.nuget.org/"
@@ -96,10 +96,10 @@
   existing documentation with outdated information which is why I have published this repository. The template generates the
   Identity v2.2 ApplicationUser class and the database tables for roles and claims using EntityFrameworkCore. This model includes
   the ApplicationRole class, ApplicationUserRole class, AdminController, AdminViewModels and Admin views. I have developed the
-  appsettings.json to include useful site settings, a smtp settings class and a sms settings class. This model has a UtilityService injected
-  on to the context with an event logger which records events in a separate SQLite database file. The UtilityService, AccountController,
-  AdminController and ManageController have email and/or sms message layouts but the SendEmailAsync and SendSmsAsync
-  commands are commented out followed by an
+  appsettings.json to include useful site settings, a smtp settings class and a sms settings class. This model has a UtilityService
+  injected on to the context with an event logger which records events in a separate SQLite database file. The UtilityService,
+  AccountController, AdminController and ManageController have email and/or sms message layouts but the SendEmailAsync and
+  SendSmsAsync commands are commented out followed by an
 <p>
   <strong>await Task.Run(() => { Task.Delay(500); });</strong>
 </p>
