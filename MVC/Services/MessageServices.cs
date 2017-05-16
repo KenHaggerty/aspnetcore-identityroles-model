@@ -39,7 +39,8 @@ namespace MVC.Services
       using (var client = new SmtpClient())
       {
         client.AuthenticationMechanisms.Remove("XOAUTH2");
-        await client.ConnectAsync(_settings.SmtpSettings.Host, _settings.SmtpSettings.Port, SecureSocketOptions.None).ConfigureAwait(false);
+        await client.ConnectAsync(_settings.SmtpSettings.Host, _settings.SmtpSettings.Port, SecureSocketOptions.None)
+          .ConfigureAwait(false);
         await client.AuthenticateAsync(_settings.SmtpSettings.UserName, _settings.SmtpSettings.Password);
         await client.SendAsync(emailMessage).ConfigureAwait(false);
         await client.DisconnectAsync(true).ConfigureAwait(false);
@@ -57,7 +58,8 @@ namespace MVC.Services
       using (var client = new SmtpClient())
       {
         client.AuthenticationMechanisms.Remove("XOAUTH2");
-        await client.ConnectAsync(_settings.SmtpSettings.Host, _settings.SmtpSettings.Port, SecureSocketOptions.None).ConfigureAwait(false);
+        await client.ConnectAsync(_settings.SmtpSettings.Host, _settings.SmtpSettings.Port, SecureSocketOptions.None)
+          .ConfigureAwait(false);
         await client.AuthenticateAsync(_settings.SmtpSettings.UserName, _settings.SmtpSettings.Password);
         await client.SendAsync(emailMessage).ConfigureAwait(false);
         await client.DisconnectAsync(true).ConfigureAwait(false);
@@ -77,10 +79,12 @@ namespace MVC.Services
       {
         throw new ArgumentException("message was not provided");
       }
-      var keyValues = new List<KeyValuePair<string, string>>();
-      keyValues.Add(new KeyValuePair<string, string>("To", number));
-      keyValues.Add(new KeyValuePair<string, string>("From", _settings.SmsSettings.From));
-      keyValues.Add(new KeyValuePair<string, string>("Body", message));
+      var keyValues = new List<KeyValuePair<string, string>>
+      {
+        new KeyValuePair<string, string>("To", number),
+        new KeyValuePair<string, string>("From", _settings.SmsSettings.From),
+        new KeyValuePair<string, string>("Body", message)
+      };
       var content = new FormUrlEncodedContent(keyValues);
       using (var client = new HttpClient { BaseAddress = new Uri(_settings.SmsSettings.BaseUri) })
       {
@@ -89,13 +93,7 @@ namespace MVC.Services
         var response = await client.PostAsync(_settings.SmsSettings.RequestUri, content).ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-          //if (log != null)
-          //{
-          //    string responseBody = await response.Content.ReadAsStringAsync();
-          //    var logmessage = $"failed to send sms message to {toPhoneNumber} from {credentials.FromNumber} { response.ReasonPhrase } { responseBody }";
-          //    log.LogWarning(logmessage);
-          //}
-          //return false;
+          // Handle fail
         }
       }
     }

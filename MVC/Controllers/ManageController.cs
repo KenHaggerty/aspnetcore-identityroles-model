@@ -89,7 +89,8 @@ namespace MVC.Controllers
         if (result.Succeeded)
         {
           await _signInManager.SignInAsync(user, isPersistent: false);
-          _utilityService.InsertLogEntry(HttpContext, account.LoginProvider + " Login Deleted", user.UserName + " - removed " + account.LoginProvider + ".", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, account.LoginProvider + " Login Deleted", user.UserName + " - removed "
+            + account.LoginProvider + ".", LogType.Information);
           message = ManageMessageId.RemoveLoginSuccess;
         }
       }
@@ -140,7 +141,8 @@ namespace MVC.Controllers
         await _userManager.SetTwoFactorEnabledAsync(user, true);
         await _signInManager.SignInAsync(user, isPersistent: false);
         //_logger.LogInformation(1, "User enabled two-factor authentication.");
-        _utilityService.InsertLogEntry(HttpContext, "Enable 2 Factor", user.UserName + " enabled 2 factor authentication.", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Enable 2 Factor", user.UserName + " enabled 2 factor authentication.",
+          LogType.Information);
       }
       return RedirectToAction(nameof(Index), "Manage");
     }
@@ -157,7 +159,8 @@ namespace MVC.Controllers
         await _userManager.SetTwoFactorEnabledAsync(user, false);
         await _signInManager.SignInAsync(user, isPersistent: false);
         //_logger.LogInformation(2, "User disabled two-factor authentication.");
-        _utilityService.InsertLogEntry(HttpContext, "Disable 2 Factor", user.UserName + " disabled 2 factor authentication.", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Disable 2 Factor", user.UserName + " disabled 2 factor authentication.",
+          LogType.Information);
       }
       return RedirectToAction(nameof(Index), "Manage");
     }
@@ -174,7 +177,8 @@ namespace MVC.Controllers
       }
       var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
       // Send an SMS to verify the phone number
-      _utilityService.InsertLogEntry(HttpContext, "Phone Code Sent", user.UserName + " sent code to verify " + phoneNumber + ".", LogType.Information);
+      _utilityService.InsertLogEntry(HttpContext, "Phone Code Sent", user.UserName + " sent code to verify " + phoneNumber
+        + ".", LogType.Information);
       return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
     }
 
@@ -195,7 +199,8 @@ namespace MVC.Controllers
         if (result.Succeeded)
         {
           await _signInManager.SignInAsync(user, isPersistent: false);
-          _utilityService.InsertLogEntry(HttpContext, "Phone Updated", user.UserName + " updated phone to " + model.PhoneNumber + ".", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Phone Updated", user.UserName + " updated phone to "
+            + model.PhoneNumber + ".", LogType.Information);
           return RedirectToAction(nameof(Index), new { Message = ManageMessageId.AddPhoneSuccess });
         }
       }
@@ -251,7 +256,8 @@ namespace MVC.Controllers
         {
           await _signInManager.SignInAsync(user, isPersistent: false);
           //_logger.LogInformation(3, "User changed their password successfully.");
-          _utilityService.InsertLogEntry(HttpContext, "Password Updated", user.UserName + " reset their password successfully.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Password Updated", user.UserName + " reset their password successfully.",
+            LogType.Information);
           return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
         }
         AddErrors(result);
@@ -287,7 +293,8 @@ namespace MVC.Controllers
         if (result.Succeeded)
         {
           await _signInManager.SignInAsync(user, isPersistent: false);
-          _utilityService.InsertLogEntry(HttpContext, "Password Set", user.UserName + " set their password successfully.", LogType.Information);
+          _utilityService.InsertLogEntry(HttpContext, "Password Set", user.UserName + " set their password successfully.",
+            LogType.Information);
           return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
         }
         AddErrors(result);
@@ -313,7 +320,8 @@ namespace MVC.Controllers
         return View("Error");
       }
       var userLogins = await _userManager.GetLoginsAsync(user);
-      var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
+      var otherLogins = _signInManager.GetExternalAuthenticationSchemes()
+        .Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
       ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
       return View(new ManageLoginsViewModel
       {
@@ -334,7 +342,8 @@ namespace MVC.Controllers
       // Request a redirect to the external login provider to link a login for the current user
       var redirectUrl = Url.Action(nameof(LinkLoginCallback), "Manage");
       var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
-      _utilityService.InsertLogEntry(HttpContext, provider + " Login Challenge Sent", User.Identity.Name + " - challenged " + provider + ".", LogType.Information);
+      _utilityService.InsertLogEntry(HttpContext, provider + " Login Challenge Sent", User.Identity.Name + " - challenged "
+        + provider + ".", LogType.Information);
       return Challenge(properties, provider);
     }
 
@@ -360,7 +369,8 @@ namespace MVC.Controllers
         message = ManageMessageId.AddLoginSuccess;
         // Clear the existing external cookie to ensure a clean login process
         await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
-        _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Added", user.UserName + " - added " + info.LoginProvider + ".", LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Added", user.UserName + " - added "
+          + info.LoginProvider + ".", LogType.Information);
       }
       return RedirectToAction(nameof(ManageLogins), new { Message = message });
     }

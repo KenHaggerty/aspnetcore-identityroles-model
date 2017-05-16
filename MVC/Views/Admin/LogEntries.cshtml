@@ -36,7 +36,8 @@
     <div class="form-group">
       <label class="col-md-1 text-right control-label" style="margin: 8px 0 0 0; padding-right:5px;">Types</label>
       <div class="col-md-2">
-        @Html.DropDownListFor(model => model.Type, Model.Types, new { @class = "form-control", onchange = @"$('[name=Page]').val(1); this.form.submit();" })
+        @Html.DropDownListFor(model => model.Type, Model.Types, new { @class = "form-control",
+              onchange = @"$('[name=Page]').val(1); this.form.submit();" })
       </div>
     </div>
   </form>
@@ -120,19 +121,23 @@
       var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
       var nextDisabled = !Model.HasNextPage ? "disabled" : "";
       <ul class="pagination pagination-sm">
-        <li class="@prevDisabled"><a href="LogEntries?Page=@(Model.PageIndex - 1)&Start=@Model.StartDate&End=@Model.EndDate&Type=@Model.Type&Country=@Model.Country"><</a></li>
+        <li class="@prevDisabled"><a href="LogEntries?Page=@(Model.PageIndex - 1)&Start=@Model.StartDate&
+End=@Model.EndDate&Type=@Model.Type&Country=@Model.Country"><</a></li>
         @for (var p = 1; p <= count; p++)
         {
           if (p == Model.PageIndex)
           {
-            <li class="active"><a href="LogEntries?Page=@p&Start=@Model.StartDate&End=@Model.EndDate&Type=@Model.Type&Country=@Model.Country">@p.ToString()</a></li>
+            <li class="active"><a href="LogEntries?Page=@p&Start=@Model.StartDate&End=@Model.EndDate&
+Type=@Model.Type&Country=@Model.Country">@p.ToString()</a></li>
           }
           else
           {
-            <li><a href="LogEntries?Page=@p&Start=@Model.StartDate&End=@Model.EndDate&Type=@Model.Type&Country=@Model.Country">@p.ToString()</a></li>
+            <li><a href="LogEntries?Page=@p&Start=@Model.StartDate&End=@Model.EndDate&
+Type=@Model.Type&Country=@Model.Country">@p.ToString()</a></li>
           }
         }
-        <li class="@nextDisabled"><a href="LogEntries?Page=@(Model.PageIndex + 1)&Start=@Model.StartDate&End=@Model.EndDate&Type=@Model.Type&Country=@Model.Country">></a></li>
+        <li class="@nextDisabled"><a href="LogEntries?Page=@(Model.PageIndex + 1)&Start=@Model.StartDate&
+End=@Model.EndDate&Type=@Model.Type&Country=@Model.Country">></a></li>
       </ul>
     }
   }

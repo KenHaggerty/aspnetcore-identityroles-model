@@ -10,16 +10,12 @@ namespace MVC.Models.AdminViewModels
     [Key]
     [RegularExpression("[a-zA-Z0-9]+", ErrorMessage = "Must be  letters or numbers. No spaces.")]
     public string UserName { get; set; }
-
     [Required]
     public string Email { get; set; }
-
     [Display(Name = "Email Verified")]
-    public bool EmailConfirmed { get; set; }
-    
+    public bool EmailConfirmed { get; set; }    
     [Display(Name = "2 Factor Enabled")]
-    public bool TwoFactorEnabled { get; set; } = false;
-    
+    public bool TwoFactorEnabled { get; set; } = false;    
     [Display(Name = "Roles")]
     public string RolesString { get; set; }
     
@@ -45,16 +41,12 @@ namespace MVC.Models.AdminViewModels
 
     [Required]
     public string Password { get; set; }
-
     [Display(Name = "Must Change")]
     public bool MustChangePassword { get; set; } = true;
-
     [Display(Name = "Phone")]
     public string PhoneNumber { get; set; }
-
     [Display(Name = "External Logins")]
     public string ExternalLoginsString { get; set; }
-
     [Display(Name = "Send Email")]
     public bool SendEmail { get; set; } = true;
 
@@ -70,15 +62,11 @@ namespace MVC.Models.AdminViewModels
     
     [Display(Name = "Phone")]
     public string PhoneNumber { get; set; }
-
     public string Password { get; set; }
-
     [Display(Name = "Must Change")]
     public bool MustChangePassword { get; set; } = true;
-
     [Display(Name = "Send Email")]
-    public bool SendEmail { get; set; }
-    
+    public bool SendEmail { get; set; }    
     [Display(Name = "External Logins")]
     public string ExternalLoginsString { get; set; }
 

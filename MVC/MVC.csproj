@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <UserSecretsId>aspnet-MVC-214FFD11-1E0E-4A82-9113-325ECB33B6D2</UserSecretsId>
-    <Version>1.0.1.0</Version>
+    <Version>1.0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,10 +48,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
     <PackageReference Include="NETCore.MailKit" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-    <!--<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />-->
+    <!--<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />-->
   </ItemGroup>
 
   <ItemGroup>

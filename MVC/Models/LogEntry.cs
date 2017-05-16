@@ -28,7 +28,8 @@ namespace MVC.Models
         
         public LogEntry() { }
 
-        public LogEntry(string subject, string message, string userName, string controller, string action, string host, string exceptionString, LogType type = LogType.Information)
+        public LogEntry(string subject, string message, string userName, string controller, string action, string host,
+          string exceptionString, LogType type = LogType.Information)
         {
             //ID = Guid.NewGuid().ToString();
             CreateDate = DateTime.UtcNow;

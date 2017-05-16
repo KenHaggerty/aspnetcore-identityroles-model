@@ -1,92 +1,111 @@
 ﻿@{
     ViewData["Title"] = "MVC Identity Roles";
 }
+<style>
+  .carousel-inner {
+    max-height: 200px;
+  }
 
+  p {
+    font-size: 1.2em;
+  }
+</style>
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+    <li data-target="#myCarousel" data-slide-to="3"></li>
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
+      <div class="carousel-caption" role="option">
+        <p>
+          Learn how to build ASP.NET apps that can run anywhere.
+          <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
+            Learn More
+          </a>
+        </p>
+      </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    <div class="item">
+      <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
+      <div class="carousel-caption" role="option">
+        <p>
+          There are powerful new features in Visual Studio for building modern web apps.
+          <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
+            Learn More
+          </a>
+        </p>
+      </div>
+    </div>
+    <div class="item">
+      <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
+      <div class="carousel-caption" role="option">
+        <p>
+          Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
+          <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
+            Learn More
+          </a>
+        </p>
+      </div>
+    </div>
+    <div class="item">
+      <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
+      <div class="carousel-caption" role="option">
+        <p>
+          Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
+          <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
+            Learn More
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
 </div>
 <h3>MVC Identity Roles</h3>
 <p class="text-justify">
-  Visual Studio 2017 was released for production on 2017-03-07, but I have been developing with VS 2017 since around the first of the year with the release candidate
-  versions. You can generate a site almost like this model by installing the .NET Core command-line interface (CLI) tools or VS 2017 then using the command below from
-  a command prompt inside an empty folder. This <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/tools/" target="_blank">article</a> explains the
-  commands and installation options.
+  Visual Studio 2017 was released for production on 2017-03-07, but I have been developing with VS 2017 since around the first of the
+  year with the release candidate versions. You can generate a site almost like this model by installing the .NET Core command-line
+  interface (CLI) tools or VS 2017 then using the command below from a command prompt inside an empty folder. This
+  <a href="https://docs.microsoft.com/en-us/dotnet/articles/core/tools/" target="_blank">article</a> explains the commands and
+  installation options.
 </p>
 <p>
   <strong>dotnet new mvc -au Individual -f netcoreapp1.1</strong>
 </p>
 <p class="text-justify">
-  The templated site supports user registration and logins with a local SQLite database and it has a minimal logger configured for debugging. The templated site
-  gets you pretty far and will launch as is from VS 2017. One new feature uses an appsettings.json file to inject key-value settings on to the context making them available
-  virtually anywhere in your site.
-  This <a href="https://hassantariqblog.wordpress.com/2017/02/20/asp-net-core-step-by-step-guide-to-access-appsettings-json-in-web-project-and-class-library/" target="_blank">article</a>
-  gives a very good explanation of how to configure this feature.
+  The templated site supports user registration and logins with a local SQLite database and it has a minimal logger configured for
+  debugging. The templated site gets you pretty far and will restore, build and  launch from VS 2017. One new feature uses an
+  appsettings.json  file to inject key-value settings on to the context making them available virtually anywhere in your site. This
+  <a href="https://hassantariqblog.wordpress.com/2017/02/20/asp-net-core-step-by-step-guide-to-access-appsettings-json-in-
+web-project-and-class-library/" target="_blank">article</a> gives a very good explanation of how to configure this feature.
 </p>
 <p class="text-justify">
-  This model is referencing the 1.1.2 SDK, delivered by <a href="https://www.nuget.org/" target="_blank">NuGet</a> have
-  matured to a very stable platform. Unfortunately, the rapid development of the frameworks has left a lot of the existing documentation with inaccuracies which is why I have
-  published this repository. The template generates the Identity v2.2 ApplicationUser class and the database tables for roles and claims using EntityFrameworkCore.
-  This model includes the ApplicationRole class, ApplicationUserRole class, AdminController, AdminViewModels and Admin views. I have developed the appsettings.json
-  to include useful site settings, a smtp settings class and a sms settings class. This model has a utility service with stubbed out email and sms message layouts and an event
-  logger which records the events in a separate SQLite database. The first registered user automatically creates Admin, Manager and LogView roles and assigns the Admin
-  role and LockoutEnabled = false to the user. This model uses roles and settings throughout.
+  This model uses the 1.1.2 SDK and the referenced packages which are delivered by <a href="https://www.nuget.org/"
+  target="_blank">NuGet</a> have matured to a very stable platform. The rapid development of the framework has left a lot of the
+  existing documentation with outdated information which is why I have published this repository. The template generates the
+  Identity v2.2 ApplicationUser class and the database tables for roles and claims using EntityFrameworkCore. This model includes
+  the ApplicationRole class, ApplicationUserRole class, AdminController, AdminViewModels and Admin views. I have developed the
+  appsettings.json to include useful site settings, a smtp settings class and a sms settings class. This model has a UtilityService
+  injected on to the context with an event logger which records events in a separate SQLite database file. The UtilityService,
+  AccountController, AdminController and ManageController have email and/or sms message layouts but the SendEmailAsync and
+  SendSmsAsync commands are commented out followed by an
+<p>
+  <strong>await Task.Run(() => { Task.Delay(500); });</strong>
+</p>
+<p class="text-justify">
+  command. You should update the SmtpSettings and SmsSettings in the appsettings.json file with your email and sms provider
+  settings before uncommenting the SendEmailAsync and SendSmsAsync commands. The first registered user automatically creates
+  Admin, Manager and LogView roles and assigns the Admin role and LockoutEnabled = false to the user. This model uses roles and
+  settings throughout.
 </p>
