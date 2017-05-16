@@ -354,8 +354,11 @@ namespace MVC.Controllers
           }
           else
           {
-            _utilityService.InsertLogEntry(HttpContext, "External Login Error", "LinkExternal post IsNotAllowed and IsEmailConfirmed.", LogType.Error, true);
-            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>There was an error linking the external service.</li><li>Please contact support.</li></ul>" });
+            _utilityService.InsertLogEntry(HttpContext, "External Login Error", "LinkExternal post IsNotAllowed and IsEmailConfirmed.",
+              LogType.Error, true);
+            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>There was an error" +
+              " linking the external service.</li><li>Please contact support.</li></ul>"
+            });
           }
         }
         else
