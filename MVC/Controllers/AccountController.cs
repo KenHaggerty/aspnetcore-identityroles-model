@@ -172,8 +172,9 @@ namespace MVC.Controllers
           if (info == null)
           {
             _utilityService.InsertLogEntry(HttpContext, "External Login Error", "LinkExternal post info is null.", LogType.Error, true);
-            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in" +
-              " but there was an error linking the external service.</li></ul>" });
+            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged" +
+              " in but there was an error linking the external service.</li></ul>"
+            });
           }
           var addresult = await _userManager.AddLoginAsync(user, info);
           if (addresult.Succeeded)
@@ -263,8 +264,8 @@ namespace MVC.Controllers
           if (info == null)
           {
             _utilityService.InsertLogEntry(HttpContext, "External Login Error", "LinkExternal post info is null.", LogType.Error, true);
-            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in" +
-              " but there was an error linking the external service.</li></ul>"
+            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged" +
+              " in but there was an error linking the external service.</li></ul>"
             });
           }
           var addresult = await _userManager.AddLoginAsync(user, info);
@@ -277,19 +278,22 @@ namespace MVC.Controllers
                   " Two Factor.", LogType.Information);
                 break;
               case "GitHub":
-                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Added", user.UserName + " - added GitHub. Requires Two Factor.",
+                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Added", user.UserName + " - added GitHub. Requires" +
+                  " Two Factor.",
                   LogType.Information);
                 break;
               case "Google":
-                _utilityService.InsertLogEntry(HttpContext, "Google Login Added", user.UserName + " - added Google. Requires Two Factor.",
+                _utilityService.InsertLogEntry(HttpContext, "Google Login Added", user.UserName + " - added Google. Requires" +
+                  " Two Factor.",
                   LogType.Information);
                 break;
               case "Microsoft":
-                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Added", user.UserName + " - added Microsoft. Requires Two" +
-                  " Factor.", LogType.Information);
+                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Added", user.UserName + " - added Microsoft. Requires" +
+                  " Two Factor.", LogType.Information);
                 break;
               case "Twitter":
-                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Added", user.UserName + " - added Twitter. Requires Two Factor.",
+                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Added", user.UserName + " - added Twitter. Requires" +
+                  " Two Factor.",
                   LogType.Information);
                 break;
               default:
@@ -303,32 +307,32 @@ namespace MVC.Controllers
             switch (info.LoginProvider)
             {
               case "Facebook":
-                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
-                  " - Facebook result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Facebook Login Error", "LinkExternal Requires Two Factor. " + user.UserName
+                  + " - Facebook result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "GitHub":
-                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
-                  " - GitHub result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "GitHub Login Error", "LinkExternal Requires Two Factor. " + user.UserName
+                  + " - GitHub result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Google":
-                _utilityService.InsertLogEntry(HttpContext, "Google Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
-                  " - Google result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Google Login Error", "LinkExternal Requires Two Factor. " + user.UserName
+                  + " - Google result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Microsoft":
-                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
-                  " - Microsoft result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Microsoft Login Error", "LinkExternal Requires Two Factor. " + user.UserName
+                  + " - Microsoft result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               case "Twitter":
-                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Error", "LinkExternal Requires Two Factor. " + user.UserName +
-                  " - Twitter result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, "Twitter Login Error", "LinkExternal Requires Two Factor. " + user.UserName
+                  + " - Twitter result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
               default:
-                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Error", "LinkExternal Requires Two Factor. " +
-                  user.UserName + " - " + info.LoginProvider + " result = " + addresult.Errors.ToString(), LogType.Error);
+                _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Error", "LinkExternal Requires Two Factor. "
+                  + user.UserName + " - " + info.LoginProvider + " result = " + addresult.Errors.ToString(), LogType.Error);
                 break;
             }
-            //return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged in" +
-            //  " but there was an error linking the external service.</li></ul>" });
+            //return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>You are logged" +
+            //  " in but there was an error linking the external service.</li></ul>" });
           }
 
           _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", username + " requires two factor verification.",
@@ -338,8 +342,8 @@ namespace MVC.Controllers
         else if (result.IsLockedOut)
         {
           _utilityService.InsertLogEntry(HttpContext, "Login Lockout", username + " account locked out.", LogType.Error, true);
-          return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>This account has been" +
-              " locked out.</li><li>Please try again later.</li></ul>"
+          return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>This account has" +
+              " been locked out.</li><li>Please try again later.</li></ul>"
           });
         }
         else if (result.IsNotAllowed)
@@ -356,8 +360,8 @@ namespace MVC.Controllers
           {
             _utilityService.InsertLogEntry(HttpContext, "External Login Error", "LinkExternal post IsNotAllowed and IsEmailConfirmed.",
               LogType.Error, true);
-            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>There was an error" +
-              " linking the external service.</li><li>Please contact support.</li></ul>"
+            return Json(new { success = false, responseText = "<ul class='text-danger validation-summary-errors'><li>There was an" +
+              " error linking the external service.</li><li>Please contact support.</li></ul>"
             });
           }
         }
