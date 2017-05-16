@@ -658,13 +658,14 @@ namespace MVC.Controllers
       }
       if (result.RequiresTwoFactor)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", info.LoginProvider + " login requires two factor verification.",
-          LogType.Information);
+        _utilityService.InsertLogEntry(HttpContext, "Two Factor Required", info.LoginProvider +
+          " login requires two factor verification.", LogType.Information);
         return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
       }
       if (result.IsLockedOut)
       {
-        _utilityService.InsertLogEntry(HttpContext, "Login Lockout", info.LoginProvider + " login is locked out.", LogType.Error, true);
+        _utilityService.InsertLogEntry(HttpContext, "Login Lockout", info.LoginProvider + " login is locked out.",
+          LogType.Error, true);
         return View("Lockout");
       }
       else
@@ -692,7 +693,8 @@ namespace MVC.Controllers
             _utilityService.InsertLogEntry(HttpContext, "Twitter Login Account None", infomessage, LogType.Information);
             break;
           default:
-            _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Account None", infomessage, LogType.Information);
+            _utilityService.InsertLogEntry(HttpContext, info.LoginProvider + " Login Account None", infomessage,
+              LogType.Information);
             break;
         }
         return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
@@ -704,7 +706,8 @@ namespace MVC.Controllers
     [HttpPost]
     [AllowAnonymous]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
+    public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+      string returnUrl = null)
     {
       if (!ModelState.IsValid)
       {
