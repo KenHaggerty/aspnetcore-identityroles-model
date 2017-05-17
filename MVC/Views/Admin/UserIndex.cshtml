@@ -44,7 +44,7 @@
                         <a asp-action="UserRoles" asp-route-id="@user.UserName">Roles</a><text> |</text>
                     }
                     <a asp-action="EditUser" asp-route-id="@user.UserName">Edit</a>
-                    @if (Context.User.IsInRole("AdminRole"))
+                    @if (Context.User.IsInRole("AdminRole") && user.CanDelete)
                     {
                         <text>| </text><a asp-action="DeleteUser" asp-route-id="@user.UserName" >Delete</a>
                     }

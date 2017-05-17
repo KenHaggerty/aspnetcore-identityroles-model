@@ -49,7 +49,6 @@ namespace MVC.Controllers
     // GET: /<controller>/
     public async Task<IActionResult> Index()
     {
-      ViewData["Theme"] = Request.Cookies["TempThemeCookie"];
       _utilityService.SetViewCookie(HttpContext, "Member Index View", "MemberIndexView", LogType.Information);
       var user = await GetCurrentUserAsync();
       if (user == null)
@@ -72,19 +71,6 @@ namespace MVC.Controllers
 
     #region Helpers
 
-    private bool IsDate(string dateString)
-    {
-      string format = "yyyy-MM-dd";
-      DateTime dateTime;
-      if (DateTime.TryParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    }
     private string AddErrors(IdentityResult result)
     {
       var sb = new StringBuilder();

@@ -390,7 +390,6 @@ namespace MVC.Controllers
     [HttpGet]
     public IActionResult MustChangePassword(string id = "", string returnUrl = null)
     {
-      ViewData["Theme"] = Request.Cookies["TempThemeCookie"];
       _utilityService.SetViewCookie(HttpContext, "Must Change Password View", "PasswordMustChangeView",
         LogType.Information);
       return View(new MustChangePasswordViewModel(id, returnUrl));
@@ -402,7 +401,6 @@ namespace MVC.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> MustChangePassword(MustChangePasswordViewModel model)
     {
-      ViewData["Theme"] = Request.Cookies["TempThemeCookie"];
       if (!ModelState.IsValid)
       {
         _utilityService.InsertLogEntry(HttpContext, "Must Change Password Error", "MustChangePassword post model state is invalid.",
@@ -909,7 +907,6 @@ namespace MVC.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> VerifyEmail(VerifyEmailViewModel model)
     {
-      ViewData["Theme"] = Request.Cookies["TempThemeCookie"];
       if (!ModelState.IsValid)
       {
         _utilityService.InsertLogEntry(HttpContext, "Email Confirmation Error", "VerifyEmail post model state is invalid.",

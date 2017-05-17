@@ -260,22 +260,26 @@ namespace MVC.Controllers
       var ul = new List<UserViewModel>();
       foreach (ApplicationUser u in users)
       {
-        var uroles = await _userManager.GetRolesAsync(u);
-        if (!await _userManager.IsInRoleAsync(user, "AdminRole"))
+        var uroles = await _userManager.GetRolesAsync(u);        
+        if (!(await _userManager.IsInRoleAsync(user, "AdminRole")))
         {
           if (uroles.Contains("AdminRole"))
           {
             continue;
           }
         }
-        var list = uroles.OrderBy(q => q).ToList();
+        var rolelist = uroles.OrderBy(q => q).ToList();
         var userLogins = await _userManager.GetLoginsAsync(u);
         var exlogins = "";
         foreach (UserLoginInfo el in userLogins)
         {
           exlogins += el.LoginProvider[0] + ",";
         }
-        var userModel = new UserViewModel(u, list, exlogins);
+        var userModel = new UserViewModel(u, rolelist, exlogins);
+        if (u.LockoutEnabled == false || user == u)
+        {
+          userModel.CanDelete = false;
+        }
         ul.Add(userModel);
       }
       return View(ul);
