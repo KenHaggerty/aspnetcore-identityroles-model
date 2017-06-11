@@ -26,7 +26,7 @@ namespace MVC.Models.AdminViewModels
       //MustChangePassword = true;       
     }
 
-    public UserViewModel(ApplicationUser user, List<string> roles, string exlogins = "") : base()
+    public UserViewModel(ApplicationUser user, List<string> roles, string exlogins = "")
     {
       UserName = user.UserName;
       Email = user.Email;
@@ -75,7 +75,7 @@ namespace MVC.Models.AdminViewModels
       //MustChangePassword = true;       
     }
 
-    public EditUserViewModel(ApplicationUser user, string roles, string exlogins = "") : base()
+    public EditUserViewModel(ApplicationUser user, string roles, string exlogins = "")
     {
       UserName = user.UserName;
       Email = user.Email;
