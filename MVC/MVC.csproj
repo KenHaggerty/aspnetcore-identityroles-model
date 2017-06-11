@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <UserSecretsId>aspnet-MVC-214FFD11-1E0E-4A82-9113-325ECB33B6D2</UserSecretsId>
     <Version>1.0.2.2</Version>
-    <Description>A generic MVC, AspNet Core, EntityFramework Core model referencing the 1.1.2 SDK which includes roles and event log. Supports VS Code by opening the MVC folder and running dotnet restore from the terminal window.</Description>
+    <Description>A generic MVC, AspNet Core, EntityFramework Core model referencing the 1.0.4 SDK which includes roles and event log. Supports VS Code by opening the MVC folder and running dotnet restore from the terminal window.</Description>
     <Copyright>Copyright (c) 2017 Kenney M Haggerty</Copyright>
     <PackageLicenseUrl>https://github.com/KenHaggerty/aspnetcore-identityroles-model/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl />
