@@ -19,7 +19,7 @@
       <div class="col-md-2">
         @if (Context.User.IsInRole("AdminRole") || Context.User.IsInRole("ManagerRole"))
       {
-          <a asp-action="ControlPanel" class="btn btn-primary">Admin</a>
+          <a asp-action="Index" class="btn btn-primary">Admin</a>
         }
         <a asp-action="LogEntries" class="btn btn-primary" style="min-width: 0;">Reset</a>
       </div>

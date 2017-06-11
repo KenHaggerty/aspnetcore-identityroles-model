@@ -113,8 +113,7 @@ namespace MVC.Services
     }
 
     public async void InsertLogEntry(HttpContext context, string subject, string message, LogType type = LogType.Information,
-      bool sendemail = false,
-        Exception e = null, string controller = "", string action = "")
+      bool sendemail = false, Exception e = null, string controller = "", string action = "")
     {
       if (_settings.Logging.LogginOn)
       {
@@ -136,19 +135,19 @@ namespace MVC.Services
         }
 
         var le = new LogEntry(subject, message, userName, controller, action, host, exceptionString, type);
-          await _logcontext.LogEntries.AddAsync(le);
-          try
-          {
-            await _logcontext.SaveChangesAsync();
-          }
-          catch (Exception ex)
-          {
-            exceptionString = ex.ToString();
-            SendSupportNotifyEmail(_settings.SupportEmail, "Exception LogDbContext",
-              "SaveChangesAsync threw an exception. Check the SQLite file integrity.",
-                controller, action, userName, exceptionString, LogType.Critical, "Not Logged");
-            sendemail = false;
-          }
+        await _logcontext.LogEntries.AddAsync(le);
+        try
+        {
+          await _logcontext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+          exceptionString = ex.ToString();
+          SendSupportNotifyEmail(_settings.SupportEmail, "Exception LogDbContext",
+            "SaveChangesAsync threw an exception. Check the SQLite file integrity.",
+              controller, action, userName, exceptionString, LogType.Critical, "Not Logged");
+          sendemail = false;
+        }
         if (sendemail && _settings.Logging.EmailErrorsOn)
         {
           SendSupportNotifyEmail(_settings.SupportEmail, subject, message, controller, action, userName, exceptionString, type, le.ID);
@@ -157,8 +156,7 @@ namespace MVC.Services
     }
 
     public async void SendSupportNotifyEmail(string email, string subject, string message, string controller, string action,
-      string userName,
-        string exceptionString = "", LogType type = LogType.Information, string logid = "")
+      string userName, string exceptionString = "", LogType type = LogType.Information, string logid = "")
     {
       var stype = Enum.GetName(typeof(LogType), type);
       var sb = new StringBuilder(stype + "/" + subject +
