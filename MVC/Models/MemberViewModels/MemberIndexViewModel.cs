@@ -29,7 +29,7 @@ namespace MVC.Models.MemberViewModels
     {
     }
 
-    public MemberIndexViewModel(ApplicationUser user, List<string> roles, IList<UserLoginInfo> exlogins) : base()
+    public MemberIndexViewModel(ApplicationUser user, List<string> roles, IList<UserLoginInfo> exlogins)
     {
       UserName = user.UserName;
       Email = user.Email;

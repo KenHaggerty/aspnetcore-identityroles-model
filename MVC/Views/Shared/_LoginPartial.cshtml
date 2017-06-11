@@ -16,7 +16,7 @@
               <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Manage @UserManager.GetUserName(User)</a>
               </li>
-              <li><a asp-area="" asp-controller="Admin" asp-action="ControlPanel">Admin</a></li>
+              <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
               @if (Context.User.IsInRole("AdminRole") || Context.User.IsInRole("LogViewRole"))
               {
                 <li><a asp-area="" asp-controller="Admin" asp-action="LogEntries">Event Log</a></li>

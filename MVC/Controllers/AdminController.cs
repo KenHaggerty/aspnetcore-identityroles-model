@@ -55,6 +55,57 @@ namespace MVC.Controllers
     }
 
     //
+    // GET: /Admin/Index
+    [HttpGet]
+    [Authorize(Roles = "AdminRole, ManagerRole")]
+    public async Task<IActionResult> Index()
+    {
+      _utilityService.SetViewCookie(HttpContext, "Admin Index View", "AdminIndexView", LogType.Information);
+      // for testing
+      //await _smsSender.SendSmsAsync("+19876543210", "Test of Asp.Net Core Twilio.");
+      //await _emailSender.SendEmailAsync("You@YourDomain.Com", "Test Email.", "Test of Asp.Net Core Email.");            
+      var user = await GetCurrentUserAsync();
+      if (user == null)
+      {
+        ModelState.AddModelError("", "The current user was not found.");
+        _utilityService.InsertLogEntry(HttpContext, "Admin Error", "Admin Index current user was not found.",
+          LogType.Error, true);
+        return View();
+      }
+
+      try
+      {
+        var hostName = Dns.GetHostName();
+        var hostIPs = await Dns.GetHostAddressesAsync(hostName);
+        var sb = new StringBuilder("Server: HostName = " + hostName + ", DNS Host IPs = ");
+        foreach (var ip in hostIPs)
+        {
+          sb.Append(ip + ", ");
+        }
+        ViewBag.ServerHost = sb.ToString();
+      }
+      catch (Exception ex)
+      {
+        ViewBag.ServerHost = "DNS exception = " + ex.Message;
+      }
+
+      ViewBag.RemoteIP = "RemoteIP = " + HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+      ViewBag.Version = $"Version {Assembly.GetEntryAssembly().GetName().Version.ToString()}";
+      ViewBag.Description = "Admin - Index description.";
+
+      var users = _userManager.Users;
+      var ul = new List<UserViewModel>();
+      foreach (ApplicationUser u in users)
+      {
+        var uroles = await _userManager.GetRolesAsync(u);
+        var list = uroles.OrderBy(q => q).ToList();
+        var userModel = new UserViewModel(u, list);
+        ul.Add(userModel);
+      }
+      return View(ul);
+    }
+    
+    //
     // GET: /Admin/LogEntries
     [HttpGet]
     [Authorize(Roles = "AdminRole, LogViewRole")]
@@ -167,78 +218,6 @@ namespace MVC.Controllers
         _utilityService.InsertLogEntry(HttpContext, "LogEntry Error", "Id is empty.", LogType.Critical, true);
         return Json(new { error = "Id is empty." });
       }
-    }
-
-    //
-    // GET: /Admin/ControlPanel
-    [HttpGet]
-    [Authorize(Roles = "AdminRole, ManagerRole")]
-    public async Task<IActionResult> ControlPanel()
-    {
-      _utilityService.SetViewCookie(HttpContext, "Control Panel View", "ControlPanelView", LogType.Information);
-      // for testing
-      //await _smsSender.SendSmsAsync("+19876543210", "Test of Asp.Net Core Twilio.");
-      //await _emailSender.SendEmailAsync("You@YourDomain.Com", "Test Email.", "Test of Asp.Net Core Email.");            
-      var user = await GetCurrentUserAsync();
-      if (user == null)
-      {
-        ModelState.AddModelError("", "The current user was not found.");
-        _utilityService.InsertLogEntry(HttpContext, "Admin Error", "ControlPanel current user was not found.",
-          LogType.Error, true);
-        return View();
-      }
-
-      try
-      {
-        var hostName = Dns.GetHostName();
-        var hostIPs = await Dns.GetHostAddressesAsync(hostName);
-        var sb = new StringBuilder("Server: HostName = " + hostName + ", DNS Host IPs = ");
-        foreach (var ip in hostIPs)
-        {
-          sb.Append(ip + ", ");
-        }
-        ViewBag.ServerHost = sb.ToString();
-      }
-      catch (Exception ex)
-      {
-        ViewBag.ServerHost = "DNS exception = " + ex.Message;
-      }
-
-      ViewBag.RemoteIP = "RemoteIP = " + HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
-      ViewBag.Version = $"Version {Assembly.GetEntryAssembly().GetName().Version.ToString()}";
-      ViewBag.Description = "Admin - ControlPanel description.";
-
-      var users = _userManager.Users;
-      var ul = new List<UserViewModel>();
-      foreach (ApplicationUser u in users)
-      {
-        var uroles = await _userManager.GetRolesAsync(u);
-        var list = uroles.OrderBy(q => q).ToList();
-        var userModel = new UserViewModel(u, list);
-        ul.Add(userModel);
-      }
-      return View(ul);
-    }
-
-    //
-    // POST: /Admin/ControlPanel
-    [HttpPost]
-    [Authorize(Roles = "AdminRole, ManagerRole")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ControlPanel(string id = "")
-    {
-
-      var users = _userManager.Users;
-      var ul = new List<UserViewModel>();
-      foreach (ApplicationUser u in users)
-      {
-        var uroles = await _userManager.GetRolesAsync(u);
-        var list = uroles.OrderBy(q => q).ToList();
-        var userModel = new UserViewModel(u, list);
-        ul.Add(userModel);
-      }
-      return View(ul);
-
     }
 
     //
